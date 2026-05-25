@@ -7,7 +7,26 @@
   <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-  
+  <h1>마이페이지</h1>
+  <div>
+    <p>안녕하세요, <strong class="profile-username"></strong>님!</strong></p>
+    <br>
+    <button class="logout-btn">로그아웃</button>
+  </div>
+
+  <script src="../js/api.js"></script>
   <script src="../js/script.js"></script>
+  <script>
+    const profileUsername = localStorage.getItem('username');
+    if (profileUsername) { document.querySelector('.profile-username').textContent = profileUsername; }
+
+    document.querySelector('.logout-btn').addEventListener('click', () => {
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      localStorage.removeItem('username');
+      alert('로그아웃되었습니다.\n로그인 화면으로 이동합니다.');
+      window.location.href = './login.html';
+    });
+  </script>
 </body>
 </html>
