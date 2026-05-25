@@ -1,17 +1,31 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>홈 화면</title>
-  <link rel="stylesheet" href="./css/style.css">
+  <meta charset="UTF-8" />
+  <title>이음 - 피드</title>
+  <link rel="stylesheet" href="./css/style.css" />
 </head>
 <body>
-  <a href="./pages/login.html">로그인</a>
-  <a href="./pages/join.html">회원가입</a>
-  <a href="./pages/profile.html">프로필</a>
-  <a href="./pages/detail.html">글</a>
-  
-  <script src="./js/script.js"></script>
+  <header class="gnb">
+    <h1><a href="./index.html">이음</a></h1>
+    <nav>
+      <!-- 일단 버튼만 -->
+      <button id="openWriteBtn">글 작성</button>
+      <a href="./pages/profile.html">프로필</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="search-bar">
+      <input type="search" id="searchInput" 
+             placeholder="제목·내용·태그로 검색" />
+    </section>
+
+    <section class="feed-list" id="feedList">
+      <!-- JS가 여기에 카드를 꽂아넣음 -->
+    </section>
+  </main>
+
+  <script type="module" src="./js/feed.js"></script>
 </body>
 </html>

@@ -1,13 +1,36 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>글 세부 로딩</title>
-  <link rel="stylesheet" href="../css/style.css">
+  <meta charset="UTF-8" />
+  <title>이음 - 상세</title>
+  <link rel="stylesheet" href="../css/style.css" />
 </head>
 <body>
-  
-  <script src="../js/script.js"></script>
+  <header class="gnb">
+    <h1><a href="../index.html">이음</a></h1>
+  </header>
+
+  <main>
+    <a href="../index.html">← 피드로</a>
+    
+    <article id="postDetail">
+      <p class="loading">불러오는 중...</p>
+    </article>
+
+    <!-- 본인 글일 때만 노출 (플로우차트의 본인 글 여부 분기) -->
+    <div id="ownerActions" hidden>
+      <button id="editBtn">수정</button>
+      <button id="deleteBtn">삭제</button>
+    </div>
+
+    <!-- 삭제 확인 모달 (IA의 1.2.2) -->
+    <dialog id="deleteModal">
+      <p>정말 삭제하시겠습니까?</p>
+      <button id="confirmDeleteBtn">삭제</button>
+      <button id="cancelDeleteBtn">취소</button>
+    </dialog>
+  </main>
+
+  <script type="module" src="../js/detail.js"></script>
 </body>
 </html>
