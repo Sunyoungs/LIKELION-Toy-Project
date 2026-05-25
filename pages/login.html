@@ -20,12 +20,24 @@
 
   <script src="../js/api.js"></script>
   <script>
-    document.querySelector('login-btn').addEventListener('click', async() => {
-      const username = document.querySelector('login-username').value;
-      const password = document.querySelector('login-password').value;
+    document.querySelector('.login-btn').addEventListener('click', async() => {
+      const username = document.querySelector('.login-username').value;
+      const password = document.querySelector('.login-password').value;
+
       if(!username || !password) return alert('이름과 비밀번호를 입력해주세요.');
-      // api 로직 추가
-    })
+      
+      try {
+        const result = await fetchAPI('/auth/login', {
+          method: 'POST',
+          body: JSON.stringify({ username, password })
+        });
+
+        localStorage.setItem('accessToken', result.access_token);
+        localStorage.setItem('refreshToken', result.refresh_token);
+        alert('로그인에 성공했습니다!');
+        window.location.href = '../index.html';
+      } catch (error) { alert(error.message); }
+    });
   </script>
 </body>
 </html>
