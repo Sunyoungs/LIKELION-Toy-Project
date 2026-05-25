@@ -17,16 +17,22 @@
   <script src="../js/api.js"></script>
   <script src="../js/script.js"></script>
   <script>
-    const profileUsername = localStorage.getItem('username');
-    if (profileUsername) { document.querySelector('.profile-username').textContent = profileUsername; }
-
-    document.querySelector('.logout-btn').addEventListener('click', () => {
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
-      localStorage.removeItem('username');
-      alert('로그아웃되었습니다.\n로그인 화면으로 이동합니다.');
+    const token = localStorage.getItem('accessToken');
+    if (!token) {
+      alert('로그인이 필요한 서비스입니다.\n먼저 로그인을 진행해주세요.');
       window.location.href = './login.html';
-    });
+    } else {
+      const profileUsername = localStorage.getItem('username');
+      if (profileUsername) { document.querySelector('.profile-username').textContent = profileUsername; }
+
+      document.querySelector('.logout-btn').addEventListener('click', () => {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        localStorage.removeItem('username');
+        alert('로그아웃되었습니다.\n로그인 화면으로 이동합니다.');
+        window.location.href = './login.html';
+      });
+    }
   </script>
 </body>
 </html>
