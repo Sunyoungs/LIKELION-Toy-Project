@@ -1,0 +1,48 @@
+const URL = 'http://localhost:8000' // 임시 백엔드 로컬 서버
+
+/**
+ * @param {string} endpoint // API 엔드포인트 (예: '/auth/login')
+ * @param {object} option // fetch 옵션 (method, body 등)
+ * @returns {Promise<any>} // JSON 응답 데이터
+ */
+
+async function fetchAPI(endpoint, option={}) {
+  /* 서버 연결 전 임시 로그인 테스트 */
+  if (endpoint === '/auth/login') {
+    return { access_token: "fake_access", refresh_token: "fake_refresh" };
+  }
+  if (endpoint === '/auth/signup') {
+    return { message: "회원가입 완료" };
+  }
+  
+  const token = localStorage.getItem('accessToken');
+  const headers = { 'Content-Type' : 'application/json', ...option.headers };
+
+  if (token) { headers['Authorization'] = `Bearer ${token}`; }
+  if (option.body instanceof FormData) { delete headers['Content-Type'] }; // 파일 업로드 시 boundary 자동 계산하도록 Content-Type 삭제
+
+  try {
+    const response = await fetch(`${URL}${endpoint}`, {
+      ...option, headers,
+    });
+
+    if (response.status === 204) { return null; } // 글 삭제 등 204 error 시 NULL 반환
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      if (response.status === 401) {
+        alert('로그인이 만료되었습니다.\n다시 로그인해주세요.');
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        window.location.href = '../pages/login.html';
+        return;
+      }
+      throw new Error(data.message || '서버 통신 중 오류가 발생했습니다.');
+    }
+    return data;
+  } catch (error) {
+    console.error(`[API Error] ${endpoint}: `, error);
+    throw error;
+  }
+}

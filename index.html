@@ -10,8 +10,15 @@
   <a href="./pages/login.html">로그인</a>
   <a href="./pages/join.html">회원가입</a>
   <a href="./pages/profile.html">프로필</a>
-  <a href="./pages/detail.html">글</a>
   
+  <main>
+    <input type="text" id="searchInput" placeholder="검색어를 입력하세요">
+    <button>검색</button>
+    <div id="feedList"></div>
+  </main>
+  
+  <script src="./js/api.js"></script>
   <script src="./js/script.js"></script>
+  <script type="module" src="./js/feed.js"></script>
 </body>
 </html>
