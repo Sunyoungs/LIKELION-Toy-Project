@@ -7,14 +7,43 @@
   <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-  <h1>회원가입 화면</h1>
-  <div>
-    <input type="text" class="join-username" placeholder="아이디를 입력하세요.">
-    <br>
-    <input type="password" class="join-password" placeholder="비밀번호를 입력하세요.">
-    <br>
-    <button class="join-btn">회원가입</button>
-    <br>
+  <div class="container">
+    <aside class="sidebar">
+      <a href="../index.html"><img src="../images/Logo.svg"></a>
+      <nav class="sidebar-nav">
+        <a href="../index.html">메인피드</a>
+        <a href="../pages/profile.html">마이페이지</a>
+      </nav>
+      <div class="sidebar-search">
+        <input type="text" id="searchInput" placeholder="장소 등 떠오르는 키워드 입력하기">
+        <button type="submit"><img src="../images/arrow.svg" style="width: 12px;"></button>
+      </div>
+      <div> <!--정렬 및 카테고리 부분 우선 텍스트만 작성-->
+        <p><strong>정렬</strong></p>
+        <div>
+          <button style="border: none;">최신순</button>
+          <button style="border: none;">오래된순</button>
+        </div>
+        <br>
+        <p><strong>카테고리</strong></p>
+        <ul>
+          <li>전체</li>
+          <li>학창시절</li>
+          <li>대중교통</li>
+        </ul>
+      </div> 
+    </aside>
+    <main class="main">
+      <img src="../images/sideLogo.svg">
+      <br>
+      
+      <h1>회원가입 화면</h1>
+      <input type="text" class="join-username" placeholder="아이디를 입력하세요.">
+      <br>
+      <input type="password" class="join-password" placeholder="비밀번호를 입력하세요.">
+      <br>
+      <button class="join-btn">회원가입</button>
+    </main>
   </div>
 
   <script src="../js/api.js"></script>
@@ -23,8 +52,6 @@
       const username = document.querySelector('.join-username').value;
       const password = document.querySelector('.join-password').value;
 
-      if(!username || !password) return alert('이름과 비밀번호를 입력해주세요.');
-      
       try {
         const result = await fetchAPI('/auth/signup', {
           method: 'POST',
@@ -34,7 +61,7 @@
         alert('회원가입이 완료되었습니다.');
         window.location.href = './login.html';
       } catch (error) { alert(error.message); }
-    })
+    });
   </script>
 </body>
 </html>
