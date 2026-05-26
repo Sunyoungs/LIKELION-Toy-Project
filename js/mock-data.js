@@ -24,8 +24,8 @@ export const MOCK_POSTS = [
   {
     post_id: 4,
     author_username: "김지유",
-    title: "홍대 클럽 앞에서 지갑 주워주신 분 감사해요",
-    tags: ["홍대", "지갑", "감사"],
+    title: "신촌역 카페에서 노트북 충전기 빌려주신 분",
+    tags: ["신촌", "카페"],
     created_at: "2026-05-22T18:00:00Z",
   },
   {
@@ -45,8 +45,8 @@ export const MOCK_POSTS = [
   {
     post_id: 7,
     author_username: "김철수",
-    title: "신촌역 카페에서 노트북 충전기 빌려주신 분",
-    tags: ["신촌", "카페"],
+    title: "홍대 클럽 앞에서 지갑 주워주신 분 감사해요",
+    tags: ["홍대", "지갑", "감사"],
     created_at: "2026-05-24T13:00:00Z",
   },
   {
@@ -78,7 +78,7 @@ export const MOCK_POST_DETAIL = {
     author_username: "김예원",
     title: "작년 제주도 비행기 옆자리 분 찾아요",
     content: "김포→제주 JJ123편이었어요. 난기류 때서 많이 무서웠는데 옆에서 말 걸어주셔서 정말 다행이었어요. 감사 인사 꼭 전하고 싶어요.",
-    sns_link: "https://instagram.com/lee_yh",
+    sns_link: "https://instagram.com/nasa",
     tags: ["제주도", "비행기"],
     clues: [
       { file_type: "IMAGE", file_url: "https://picsum.photos/600/400?random=2" },
@@ -101,10 +101,10 @@ export const MOCK_POST_DETAIL = {
   4: {
     post_id: 4,
     author_username: "김지유",
-    title: "홍대 클럽 앞에서 지갑 주워주신 분 감사해요",
-    content: "지난주 토요일 새벽 2시쯤 홍대 주차장 거리 근처에서 지갑을 잃어버렸는데 경비실에 맡겨주셨더라고요. 덕분에 카드랑 신분증을 찾았어요. 감사합니다!",
+    title: "신촌역 카페에서 노트북 충전기 빌려주신 분",
+    content: "발표 자료 마무리하다가 배터리가 1%였는데 흔쾌히 충전기를 빌려주셨어요. 덕분에 발표 준비 잘 마쳤습니다. 감사합니다!",
     sns_link: "https://open.kakao.com/o/aNoThErLinK",
-    tags: ["홍대", "지갑", "감사"],
+    tags: ["신촌", "카페"],
     clues: [
       { file_type: "IMAGE", file_url: "https://picsum.photos/600/400?random=4" }
     ],
@@ -130,7 +130,7 @@ export const MOCK_POST_DETAIL = {
     author_username: "한소희",
     title: "작년 여름 부산 해운대 파라솔 옆 분들 찾아요",
     content: "혼자 여행 갔다가 파라솔을 못 빌려서 곤란했는데 같이 써도 된다고 해주셨어요. 시원한 수박도 나눠주셔서 정말 행복한 하루였어요.",
-    sns_link: "https://instagram.com/han_sh",
+    sns_link: "https://instagram.com/nasaearth",
     tags: ["부산", "해운대", "여름"],
     clues: [
       { file_type: "IMAGE", file_url: "https://picsum.photos/600/400?random=6" }
@@ -141,10 +141,10 @@ export const MOCK_POST_DETAIL = {
   7: {
     post_id: 7,
     author_username: "김철수",
-    title: "신촌역 카페에서 노트북 충전기 빌려주신 분",
-    content: "발표 자료 마무리하다가 배터리가 1%였는데 흔쾌히 충전기를 빌려주셨어요. 덕분에 발표 준비 잘 마쳤습니다. 감사합니다!",
+    title: "홍대 주차장 앞에서 지갑 주워주신 분 감사해요",
+    content: "지난주 토요일 새벽 2시쯤 홍대 주차장 거리 근처에서 지갑을 잃어버렸는데 경비실에 맡겨주셨더라고요. 덕분에 카드랑 신분증을 찾았어요. 감사합니다!",
     sns_link: "https://open.kakao.com/o/sOmElinK",
-    tags: ["신촌", "카페"],
+    tags: ["홍대", "지갑"],
     clues: [],
     created_at: "2026-05-24T13:00:00Z",
     updated_at: "2026-05-24T13:00:00Z",

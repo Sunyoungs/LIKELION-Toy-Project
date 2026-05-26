@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>홈 화면</title>
   <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./css/feed.css">
 </head>
 <body>
   <div class="container">
@@ -18,28 +19,55 @@
         <input type="text" id="searchInput" placeholder="장소 등 떠오르는 키워드 입력하기">
         <button type="submit"><img src="./images/arrow.svg" style="width: 12px;"></button>
       </div>
-      <div> <!--정렬 및 카테고리 부분 우선 텍스트만 작성-->
-        <p><strong>정렬</strong></p>
-        <div>
-          <button style="border: none;">최신순</button>
-          <button style="border: none;">오래된순</button>
+      <div>
+        <p class="sidebar-section-title">정렬</p>
+        <div class="sort-group">
+          <button class="sort-btn active">최신순</button>
+          <button class="sort-btn">오래된순</button>
         </div>
-        <br>
-        <p><strong>카테고리</strong></p>
-        <ul>
-          <li>전체</li>
-          <li>학창시절</li>
-          <li>대중교통</li>
+      </div>
+      <div>
+        <p class="sidebar-section-title">카테고리</p>
+        <ul class="category-list">
+          <li class="category-item active">
+            <span>전체</span>
+            <span class="category-count" id="catAll">8</span>
+          </li>
+          <li class="category-item">
+            <span>학창시절</span>
+            <span class="category-count">-</span>
+          </li>
+          <li class="category-item">
+            <span>대중교통</span>
+            <span class="category-count">-</span>
+          </li>
+          <li class="category-item">
+            <span>관광명소</span>
+            <span class="category-count">-</span>
+          </li>
+          <li class="category-item">
+            <span>편의시설</span>
+            <span class="category-count">-</span>
+          </li>
         </ul>
-      </div> 
+      </div>
     </aside>
     <main class="main">
       <img src="./images/sideLogo.svg">
       <br>
+      <div class="feed-header">
+        <span>전체보기</span>
+        <span>최신순</span>
+        <span class="feed-total" id="feedTotal">총 0개</span>
+        <div class="feed-nav">
+          <button class="feed-nav-btn">&lt;</button>
+          <button class="feed-nav-btn">&gt;</button>
+        </div>
+      </div>
       <div id="feedList"></div>
     </main>
   </div>
-  
+
   <script src="./js/api.js"></script>
   <script type="module" src="./js/feed.js"></script>
 </body>
