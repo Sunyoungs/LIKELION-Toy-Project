@@ -2,12 +2,7 @@ import { MOCK_POSTS } from './mock-data.js';
 
 //통합 시 이 함수만 교체
 async function fetchPosts(searchKeyword = '') {
-  // TODO: 통합 시 아래 mock 로직을 fetch로 교체
-  // const url = searchKeyword 
-  //   ? `${BASE_URL}/posts?search=${encodeURIComponent(searchKeyword)}`
-  //   : `${BASE_URL}/posts`;
-  // const res = await fetch(url);
-  // return await res.json();
+
 
   return new Promise((resolve) => {
     setTimeout(() => {

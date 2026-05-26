@@ -1,7 +1,6 @@
 import { MOCK_POST_DETAIL } from './mock-data.js';
 
 async function fetchPostDetail(postId) {
-  // A 파트 api.js 완성 시 아래 mock 로직을 fetch로 교체
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       const post = MOCK_POST_DETAIL[postId];
@@ -11,7 +10,6 @@ async function fetchPostDetail(postId) {
 }
 
 async function deletePost(postId) {
-  // TODO: 통합 시 → fetch(`${BASE_URL}/posts/${postId}`, { method: 'DELETE', headers: { Authorization: ... }})
   console.log(`[mock] DELETE /posts/${postId}`);
   return new Promise(r => setTimeout(r, 200));
 }
