@@ -56,7 +56,7 @@ function setupOwnerActions(post) {
 
   // 수정 → 작성 페이지로
   document.getElementById('editBtn').addEventListener('click', () => {
-    location.href = `./write.html?edit=${post.post_id}`;
+    location.href = `./edit.html?id=${post.post_id}`;
   });
 
   // 삭제 → 모달 열기
