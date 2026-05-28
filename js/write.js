@@ -107,10 +107,16 @@ document.getElementById('write-upload').addEventListener('click', async(e) => {
     });
   }
   try {
-    await fetchAPI('/posts', {
+    console.log('-- [테스트] 전송될 데이터 확인 --');
+    for (let [key, value] of formData.entries()) { 
+      console.log(`${key}: `, value instanceof File ? `[File] ${value.name}` : value); 
+    }
+    // 백엔드 서버 연동 시 주석 풀기
+    /* await fetchAPI('/posts', {
       method: 'POST',
       body: formData
     });
+    */
     alert('글 작성이 완료되었습니다!');
     window.location.href = "../index.html";
   } catch (error) {
