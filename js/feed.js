@@ -1,20 +1,8 @@
-import { MOCK_POSTS } from './mock-data.js';
-
 let allPosts = [];
 let currentPage = 0;
 const CARDS_PER_PAGE = 6;
 let currentSort = 'newest';
 let currentCategory = '';
-
-function updateCategoryCounts() {
-  document.querySelectorAll('.category-item[data-category]').forEach(item => {
-    const cat = item.dataset.category;
-    const count = cat
-      ? MOCK_POSTS.filter(p => p.tags.includes(cat)).length
-      : MOCK_POSTS.length;
-    item.querySelector('.category-count').textContent = count;
-  });
-}
 
 document.querySelectorAll('.category-item').forEach(item => {
   item.addEventListener('click', () => {
@@ -37,7 +25,7 @@ document.querySelectorAll('.sort-btn').forEach(btn => {
 });
 
 // 통합 시 이 함수만 교체 (?search=, ?tag=, ?ordering= 파라미터 대응)
-async function fetchPosts(searchKeyword = '', category = '') {
+/*async function fetchPosts(searchKeyword = '', category = '') {
   return new Promise((resolve) => {
     setTimeout(() => {
       let filtered = MOCK_POSTS;
@@ -52,6 +40,22 @@ async function fetchPosts(searchKeyword = '', category = '') {
       resolve(filtered);
     }, 200);
   });
+}*/
+
+async function fetchPosts(searchKeyword = '', category = '') {
+  // 1. 주문서(URL 파라미터)를 아주 쉽게 만들어주는 자바스크립트 기본 기능입니다.
+  const params = new URLSearchParams();
+
+  // 2. 값이 있을 때만 주문서에 추가합니다.
+  if (searchKeyword) params.append('search', searchKeyword);
+  if (category) params.append('tag', category);
+  if (currentSort === 'oldest') params.append('ordering', 'oldest'); // 명세서 기준
+
+  // 3. 만들어진 주문서를 URL 뒤에 붙입니다. (예: ?search=안경&tag=대중교통)
+  const queryString = params.toString() ? `?${params.toString()}` : '';
+
+  // 4. 백엔드가 다 걸러서 보내주니까, 우리는 받아서 바로 리턴만 하면 끝!
+  return await fetchAPI(`/posts${queryString}`);
 }
 
 function createPostCard(post) {
@@ -167,5 +171,4 @@ function formatDate(iso) {
   return `${year}.${month}.${day}`;
 }
 
-updateCategoryCounts();
 renderFeed();

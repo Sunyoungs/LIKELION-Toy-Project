@@ -1,5 +1,3 @@
-import { MOCK_POST_DETAIL } from "./mock-data.js";
-
 const token = localStorage.getItem('accessToken');
 if (!token) {
   alert('로그인이 필요한 서비스입니다.\n먼저 로그인을 진행해주세요.');
@@ -15,8 +13,6 @@ if (!postId) {
 async function loadData() {
   try {
     const mockData = await fetchAPI(`/posts/${postId}`); 
-    
-    const mockData = MOCK_POST_DETAIL[postId];
     if (!mockData) {
       alert('존재하지 않는 게시글입니다.');
       window.location.href = "../index.html";
@@ -65,13 +61,10 @@ document.getElementById('edit-upload').addEventListener('click', async(e) => {
   if (snsEtc) requestBody.snsEtc = snsEtc;
 
   try {
-    console.log('-- [수정] 전송될 데이터 확인 --', requestBody);
-    /* 백엔드 연결 후 통신하는 코드
     await fetchAPI(`/posts/${postId}`, {
       method: 'PATCH',
       body: JSON.stringify(requestBody)
     });
-    */
     alert('글 수정이 완료되었습니다!');
     window.location.href = `../pages/detail.html?id=${postId}`;
   } catch (error) {

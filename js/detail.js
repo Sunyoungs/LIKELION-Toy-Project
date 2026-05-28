@@ -1,17 +1,9 @@
-import { MOCK_POST_DETAIL, MOCK_POSTS, MOCK_CURRENT_USER } from './mock-data.js';
-
 async function fetchPostDetail(postId) {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      const post = MOCK_POST_DETAIL[postId];
-      post ? resolve(post) : reject(new Error('not found'));
-    }, 200);
-  });
+  return await fetchAPI(`/posts/${postId}`);
 }
 
 async function deletePost(postId) {
-  console.log(`[mock] DELETE /posts/${postId}`);
-  return new Promise(r => setTimeout(r, 200));
+  await fetchAPI(`/posts/${postId}`, { method: 'DELETE' });
 }
 
 function renderDetail(post) {
@@ -138,53 +130,28 @@ function setupOwnerActions(post, myUsername) {
 (async function init() {
   const params = new URLSearchParams(location.search);
   const postId = params.get('id');
-  const from = params.get('from');
-
-  // 이전/다음 글 네비게이션
-  const myUsername = MOCK_CURRENT_USER.username;
-  const navUsername = from === 'my' ? MOCK_CURRENT_USER.username : null;
-  const sourcePosts = from === 'my'
-    ? [...MOCK_POSTS]
-        .filter(p => p.author_username === navUsername)
-        .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-    : MOCK_POSTS;
-  const allIds = sourcePosts.map(p => String(p.post_id));
-  const currentIdx = allIds.indexOf(String(postId));
-  const totalCount = allIds.length;
-
-  const sourceLabel = document.getElementById('sourceLabel');
-  if (sourceLabel && from === 'my') sourceLabel.textContent = '내가 올린 글';
 
   const countEl = document.querySelector('.detail-count');
-  if (countEl) countEl.textContent = `총 ${totalCount}개 중 ${currentIdx + 1}개`;
-
-  const fromParam = from ? `&from=${from}` : '';
   const prevBtn = document.getElementById('prevPost');
   const nextBtn = document.getElementById('nextPost');
-  if (prevBtn) {
-    prevBtn.disabled = currentIdx <= 0;
-    prevBtn.addEventListener('click', () => {
-      location.href = `./detail.html?id=${allIds[currentIdx - 1]}${fromParam}`;
-    });
-  }
-  if (nextBtn) {
-    nextBtn.disabled = currentIdx >= totalCount - 1;
-    nextBtn.addEventListener('click', () => {
-      location.href = `./detail.html?id=${allIds[currentIdx + 1]}${fromParam}`;
-    });
-  }
+  
+  if (countEl) countEl.style.display = 'none';
+  if (prevBtn) prevBtn.style.display = 'none';
+  if (nextBtn) nextBtn.style.display = 'none';
 
   if (!postId) {
     document.querySelector('.detail-left').innerHTML = '<p>잘못된 접근입니다.</p>';
     return;
   }
 
+  const myUsername = localStorage.getItem('username');
+
   try {
-    const post = await fetchPostDetail(postId);
+    const post = await fetchPostDetail(postId); // 진짜 API로 데이터 가져오기!
     renderDetail(post);
     setupOwnerActions(post, myUsername);
-  } catch {
-    document.querySelector('.detail-left').innerHTML = '<p>게시글을 찾을 수 없습니다.</p>';
+  } catch (error) {
+    document.querySelector('.detail-left').innerHTML = '<p>게시글을 찾을 수 없거나 삭제되었습니다.</p>';
   }
 })();
 
