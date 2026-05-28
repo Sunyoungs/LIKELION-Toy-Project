@@ -43,18 +43,14 @@ document.querySelectorAll('.sort-btn').forEach(btn => {
 }*/
 
 async function fetchPosts(searchKeyword = '', category = '') {
-  // 1. 주문서(URL 파라미터)를 아주 쉽게 만들어주는 자바스크립트 기본 기능입니다.
   const params = new URLSearchParams();
 
-  // 2. 값이 있을 때만 주문서에 추가합니다.
   if (searchKeyword) params.append('search', searchKeyword);
   if (category) params.append('tag', category);
-  if (currentSort === 'oldest') params.append('ordering', 'oldest'); // 명세서 기준
+  if (currentSort === 'oldest') params.append('ordering', 'oldest');
 
-  // 3. 만들어진 주문서를 URL 뒤에 붙입니다. (예: ?search=안경&tag=대중교통)
   const queryString = params.toString() ? `?${params.toString()}` : '';
 
-  // 4. 백엔드가 다 걸러서 보내주니까, 우리는 받아서 바로 리턴만 하면 끝!
   return await fetchAPI(`/posts${queryString}`);
 }
 

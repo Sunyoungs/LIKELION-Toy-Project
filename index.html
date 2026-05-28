@@ -72,5 +72,10 @@
 
   <script src="./js/api.js"></script>
   <script type="module" src="./js/feed.js"></script>
+  <script>
+    if (!localStorage.getItem('accessToken')) {
+      window.location.href = './pages/join.html';
+    }
+  </script>
 </body>
 </html>
