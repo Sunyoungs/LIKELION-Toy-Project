@@ -14,9 +14,7 @@ if (!postId) {
 
 async function loadData() {
   try {
-    /* 백엔드 연동 시 코드
     const mockData = await fetchAPI(`/posts/${postId}`); 
-    */
     
     const mockData = MOCK_POST_DETAIL[postId];
     if (!mockData) {
