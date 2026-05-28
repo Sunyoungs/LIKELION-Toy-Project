@@ -4,26 +4,51 @@ let allPosts = [];
 let currentPage = 0;
 const CARDS_PER_PAGE = 6;
 let currentSort = 'newest';
+let currentCategory = '';
+
+function updateCategoryCounts() {
+  document.querySelectorAll('.category-item[data-category]').forEach(item => {
+    const cat = item.dataset.category;
+    const count = cat
+      ? MOCK_POSTS.filter(p => p.tags.includes(cat)).length
+      : MOCK_POSTS.length;
+    item.querySelector('.category-count').textContent = count;
+  });
+}
+
+document.querySelectorAll('.category-item').forEach(item => {
+  item.addEventListener('click', () => {
+    currentCategory = item.dataset.category ?? '';
+    document.querySelectorAll('.category-item').forEach(i => i.classList.remove('active'));
+    item.classList.add('active');
+    renderFeed(document.getElementById('searchInput').value.trim());
+  });
+});
 
 document.querySelectorAll('.sort-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     currentSort = btn.dataset.sort;
     document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
+    const sortLabel = document.getElementById('feedSortLabel');
+    if (sortLabel) sortLabel.textContent = currentSort === 'newest' ? '최신순' : '오래된순';
     renderFeed(document.getElementById('searchInput').value.trim());
   });
 });
 
-// 통합 시 이 함수만 교체
-async function fetchPosts(searchKeyword = '') {
+// 통합 시 이 함수만 교체 (?search=, ?tag=, ?ordering= 파라미터 대응)
+async function fetchPosts(searchKeyword = '', category = '') {
   return new Promise((resolve) => {
     setTimeout(() => {
-      if (!searchKeyword) return resolve(MOCK_POSTS);
-      const kw = searchKeyword.toLowerCase();
-      const filtered = MOCK_POSTS.filter(p =>
-        p.title.toLowerCase().includes(kw) ||
-        p.tags.some(t => t.toLowerCase().includes(kw))
-      );
+      let filtered = MOCK_POSTS;
+      if (searchKeyword) {
+        const kw = searchKeyword.toLowerCase();
+        filtered = filtered.filter(p =>
+          p.title.toLowerCase().includes(kw) ||
+          p.tags.some(t => t.toLowerCase().includes(kw))
+        );
+      }
+      if (category) filtered = filtered.filter(p => p.tags.includes(category));
       resolve(filtered);
     }, 200);
   });
@@ -96,7 +121,7 @@ async function renderFeed(keyword = '') {
   listEl.innerHTML = '<p class="loading">불러오는 중...</p>';
 
   try {
-    const fetched = await fetchPosts(keyword);
+    const fetched = await fetchPosts(keyword, currentCategory);
     allPosts = [...fetched].sort((a, b) => {
       const diff = new Date(b.created_at) - new Date(a.created_at);
       return currentSort === 'newest' ? diff : -diff;
@@ -136,9 +161,11 @@ document.getElementById('searchInput').addEventListener('input', (e) => {
 // 헬퍼
 function formatDate(iso) {
   const d = new Date(iso);
-  return d.toLocaleDateString('ko-KR', {
-    year: 'numeric', month: 'short', day: 'numeric'
-  });
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}.${month}.${day}`;
 }
 
+updateCategoryCounts();
 renderFeed();

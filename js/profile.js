@@ -12,15 +12,13 @@ document.querySelectorAll('.sort-btn').forEach(btn => {
 });
 
 const snsContainer = document.querySelector('.sns-links');
-if (snsContainer && MOCK_CURRENT_USER.sns_links?.length) {
-  MOCK_CURRENT_USER.sns_links.forEach(link => {
-    const a = document.createElement('a');
-    a.href = link;
-    a.textContent = link.replace(/^https?:\/\//, '');
-    a.target = '_blank';
-    a.rel = 'noopener';
-    snsContainer.appendChild(a);
-  });
+if (snsContainer && MOCK_CURRENT_USER.sns_link) {
+  const a = document.createElement('a');
+  a.href = MOCK_CURRENT_USER.sns_link;
+  a.textContent = MOCK_CURRENT_USER.sns_link.replace(/^https?:\/\//, '');
+  a.target = '_blank';
+  a.rel = 'noopener';
+  snsContainer.appendChild(a);
 }
 
 function createPostCard(post) {
@@ -69,9 +67,11 @@ function createPostCard(post) {
 }
 
 function formatDate(iso) {
-  return new Date(iso).toLocaleDateString('ko-KR', {
-    year: 'numeric', month: 'short', day: 'numeric'
-  });
+  const d = new Date(iso);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}.${month}.${day}`;
 }
 
 function renderMyPosts() {

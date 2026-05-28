@@ -8,6 +8,7 @@
   border: 1px solid #ddd;
   overflow: hidden;
   margin-bottom: 0;
+  margin-top: 40px;
 }
 .sidebar-search input {
   flex: 1;
@@ -111,27 +112,17 @@
 .feed-nav-btn {
   background: none;
   border: none;
+  width: 28px;
+  height: 28px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
+  font-size: 16px;
 }
 .feed-nav-btn:disabled {
   opacity: 0.3;
   cursor: default;
-}
-#prevPost {
-  flex: none;
-  order: 0;
-  align-self: stretch;
-  flex-grow: 0;
-}
-#nextPost {
-  flex: none;
-  order: 1;
-  align-self: stretch;
-  flex-grow: 0;
 }
 
 /* ===== 2열 본문 ===== */

@@ -37,7 +37,7 @@ function renderDetail(post) {
 
 function renderSidePanel(post) {
   const clues = (post.clues || []).map(renderClue).join('');
-  const snsHTML = renderSnsLinks(post.sns_ig, post.sns_etc);
+  const snsHTML = renderSnsLink(post.sns_link);
 
   if (!clues && !snsHTML) return '';
 
@@ -101,12 +101,16 @@ function getFileNameFromUrl(fileUrl, fallbackName) {
   }
 }
 
-function renderSnsLinks(snsIg, snsEtc) {
-  const items = [];
-  if (snsIg) items.push(`<a class="sns-item" href="${escapeHTML(snsIg)}" target="_blank" rel="noopener"><span class="sns-icon" aria-hidden="true"></span>인스타그램</a>`);
-  if (snsEtc) items.push(`<a class="sns-item" href="${escapeHTML(snsEtc)}" target="_blank" rel="noopener"><span class="sns-icon" aria-hidden="true"></span>기타 SNS</a>`);
-  if (!items.length) return '';
-  return `<div class="sns-section">${items.join('')}</div>`;
+function renderSnsLink(snsLink) {
+  if (!snsLink) return '';
+  const label = snsLink.includes('instagram.com') ? '인스타그램' : '기타 SNS';
+  return `
+    <div class="sns-section">
+      <a class="sns-item" href="${escapeHTML(snsLink)}" target="_blank" rel="noopener">
+        <span class="sns-icon" aria-hidden="true"></span>${label}
+      </a>
+    </div>
+  `;
 }
 
 function setupOwnerActions(post, myUsername) {

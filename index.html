@@ -30,23 +30,23 @@
       <div>
         <p class="sidebar-section-title">카테고리</p>
         <ul class="category-list">
-          <li class="category-item active">
+          <li class="category-item active" data-category="">
             <span>전체</span>
-            <span class="category-count" id="catAll">8</span>
+            <span class="category-count">-</span>
           </li>
-          <li class="category-item">
+          <li class="category-item" data-category="학창시절">
             <span>학창시절</span>
             <span class="category-count">-</span>
           </li>
-          <li class="category-item">
+          <li class="category-item" data-category="대중교통">
             <span>대중교통</span>
             <span class="category-count">-</span>
           </li>
-          <li class="category-item">
+          <li class="category-item" data-category="관광명소">
             <span>관광명소</span>
             <span class="category-count">-</span>
           </li>
-          <li class="category-item">
+          <li class="category-item" data-category="편의시설">
             <span>편의시설</span>
             <span class="category-count">-</span>
           </li>
@@ -58,7 +58,7 @@
       <br>
       <div class="feed-header">
         <span>전체보기</span>
-        <span>최신순</span>
+        <span id="feedSortLabel">최신순</span>
         <span class="feed-total" id="feedTotal">총 0개</span>
         <div class="feed-nav">
           <button class="feed-nav-btn">&lt;</button>
