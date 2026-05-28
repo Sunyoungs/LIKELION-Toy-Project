@@ -1,0 +1,28 @@
+body {
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+  height: 100vh;
+  background-color: var(--primary-gray);
+}
+.join-main {
+  background-color: var(--primary-bg);
+  padding: 50px;
+  border-radius: 15px;
+  text-align: center;
+  width: 400px;
+}
+.join-input input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 10px;
+}
+.join-input button {
+  width: 100%;
+  padding: 12px;
+  background: var(--primary-black);
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}

@@ -119,7 +119,7 @@ function setupOwnerActions(post, myUsername) {
   document.getElementById('ownerActions').hidden = false;
 
   document.getElementById('editBtn').addEventListener('click', () => {
-    location.href = `./write.html?edit=${post.post_id}`;
+    location.href = `./edit.html?id=${post.post_id}`;
   });
 
   const modal = document.getElementById('deleteModal');

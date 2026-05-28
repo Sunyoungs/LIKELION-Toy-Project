@@ -1,0 +1,69 @@
+.sidebar-category {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+.write-div {
+  margin-bottom: 40px;
+}
+.write-div > label {
+  color: var(--text-muted);
+  margin-bottom: 10px;
+  display: block;
+}
+#writeTitle, #writeText, #writeFile, #writeSNS_ig, #writeSNS_etc {
+  width: 100%;
+  padding: 10px;
+  background-color: var(--primary-gray);
+  border: none;
+  border-radius: 3px;
+  color: var(--text-gray);
+  font-family: inherit;
+  font-size: 13px;
+}
+#writeText {
+  height: 200px;
+}
+#writeFile {
+  text-align: center;
+  padding: 30px;
+  line-height: 1.5;
+  cursor: pointer;
+}
+.write-sns {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.write-sns > p {
+  color: var(--text-gray);
+  font-family: inherit;
+  font-size: 13px;
+  width: 100px;
+}
+#fileList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+.file-div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--file-main);
+  padding: 12px 15px;
+  border-radius: 3px;
+  font-size: 13px;
+  color: var(--text-muted);
+  width: calc(50% - 5px)
+}
+.delete-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 10px;
+  margin-left: 4px;
+}
