@@ -4,7 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>상세</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/detail.css" />
 </head>
 <body>
   <div class="container">
@@ -18,40 +20,63 @@
         <input type="text" id="searchInput" placeholder="장소 등 떠오르는 키워드 입력하기">
         <button type="submit"><img src="../images/arrow.svg" style="width: 12px;"></button>
       </div>
-      <div> <!--정렬 및 카테고리 부분 우선 텍스트만 작성-->
-        <p><strong>정렬</strong></p>
-        <div>
-          <button style="border: none;">최신순</button>
-          <button style="border: none;">오래된순</button>
-        </div>
-        <br>
-        <p><strong>카테고리</strong></p>
-        <ul>
-          <li>전체</li>
-          <li>학창시절</li>
-          <li>대중교통</li>
+      <div class="sidebar-section">
+        <p class="sidebar-section-title">카테고리 설정</p>
+        <ul class="detail-category-list">
+          <li>
+            <label><input type="checkbox" value="학창시절"> 학창시절</label>
+            <button class="category-toggle-btn" type="button">선택</button>
+          </li>
+          <li>
+            <label><input type="checkbox" value="대중교통"> 대중교통</label>
+            <button class="category-toggle-btn" type="button">선택</button>
+          </li>
+          <li>
+            <label><input type="checkbox" value="관광명소"> 관광명소</label>
+            <button class="category-toggle-btn" type="button">선택</button>
+          </li>
+          <li>
+            <label><input type="checkbox" value="편의시설"> 편의시설</label>
+            <button class="category-toggle-btn" type="button">선택</button>
+          </li>
         </ul>
-      </div> 
+      </div>
+      <div id="ownerActions" hidden>
+        <button id="editBtn">수정하기</button>
+        <button id="deleteBtn">삭제하기</button>
+      </div>
     </aside>
     <main class="main">
-      <img src="../images/sideLogo.svg">
-      <br>
-      
-      <article id="postDetail">
-        <p class="loading">불러오는 중...</p>
-      </article>
+      <img class="detail-logo" src="../images/articleLogo.svg" alt="이음을 기다리는">
 
-      <!-- 본인 글일 때만 노출 (플로우차트의 본인 글 여부 분기) -->
-      <div id="ownerActions" hidden>
-        <button id="editBtn">수정</button>
-        <button id="deleteBtn">삭제</button>
+      <div class="feed-header">
+        <span id="sourceLabel">전체보기</span>
+        <span>최신순</span>
+        <span class="detail-count">총 0개 중 0개</span>
+        <div class="feed-nav">
+          <button class="feed-nav-btn" id="prevPost">&lt;</button>
+          <button class="feed-nav-btn" id="nextPost">&gt;</button>
+        </div>
       </div>
 
-      <!-- 삭제 확인 모달 (IA의 1.2.2) -->
+      <div class="detail-body">
+        <div class="detail-left">
+          <p class="loading">불러오는 중...</p>
+        </div>
+        <div class="detail-right"></div>
+      </div>
+
       <dialog id="deleteModal">
-        <p>정말 삭제하시겠습니까?</p>
-        <button id="confirmDeleteBtn">삭제</button>
-        <button id="cancelDeleteBtn">취소</button>
+        <div class="modal-header">
+          <h3 class="modal-title">기록 삭제</h3>
+          <button class="modal-close-btn" id="modalCloseBtn" type="button">✕</button>
+        </div>
+        <div class="modal-post-title" id="modalPostTitle"></div>
+        <p class="modal-message">위 기록을 삭제하시겠어요?<br>삭제한 기록은 다시 복구할 수 없어요.</p>
+        <div class="modal-actions">
+          <button class="modal-cancel-btn" id="cancelDeleteBtn" type="button">취소</button>
+          <button class="modal-confirm-btn" id="confirmDeleteBtn" type="button">삭제</button>
+        </div>
       </dialog>
     </main>
   </div>

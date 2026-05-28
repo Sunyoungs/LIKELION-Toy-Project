@@ -4,49 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>로그인</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/login.css"
 </head>
 <body>
-  <div class="container">
-    <aside class="sidebar">
-      <a href="../index.html"><img src="../images/Logo.svg"></a>
-      <nav class="sidebar-nav">
-        <a href="../index.html">메인피드</a>
-        <a href="../pages/profile.html">마이페이지</a>
-      </nav>
-      <div class="sidebar-search">
-        <input type="text" id="searchInput" placeholder="장소 등 떠오르는 키워드 입력하기">
-        <button type="submit"><img src="../images/arrow.svg" style="width: 12px;"></button>
-      </div>
-      <div> <!--정렬 및 카테고리 부분 우선 텍스트만 작성-->
-        <p><strong>정렬</strong></p>
-        <div>
-          <button style="border: none;">최신순</button>
-          <button style="border: none;">오래된순</button>
-        </div>
-        <br>
-        <p><strong>카테고리</strong></p>
-        <ul>
-          <li>전체</li>
-          <li>학창시절</li>
-          <li>대중교통</li>
-        </ul>
-      </div> 
-    </aside>
-    <main class="main">
-      <img src="../images/sideLogo.svg">
-      <br>
-      
-      <h1>로그인 화면</h1>
-      <input type="text" class="login-username" placeholder="아이디를 입력하세요.">
+  <main class="login-main">
+    <a href="../index.html"><img src="../images/Logo.svg" style="margin-bottom: 30px;"></a>
+    <div class="login-input">
+      <input type="text" class="login-username" placeholder="이름을 입력하세요.">
       <br>
       <input type="password" class="login-password" placeholder="비밀번호를 입력하세요.">
       <br>
       <button class="login-btn">로그인</button>
       <br>
-      <a href="./join.html">회원가입하기</a>
-    </main>
-  </div>
+      <a href="./join.html" class="go-join">회원가입하기</a>
+    </div>
+  </main>
 
   <script src="../js/api.js"></script>
   <script>

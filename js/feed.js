@@ -1,45 +1,99 @@
 import { MOCK_POSTS } from './mock-data.js';
 
-//통합 시 이 함수만 교체
-async function fetchPosts(searchKeyword = '') {
+let allPosts = [];
+let currentPage = 0;
+const CARDS_PER_PAGE = 6;
+let currentSort = 'newest';
+let currentCategory = '';
 
+function updateCategoryCounts() {
+  document.querySelectorAll('.category-item[data-category]').forEach(item => {
+    const cat = item.dataset.category;
+    const count = cat
+      ? MOCK_POSTS.filter(p => p.tags.includes(cat)).length
+      : MOCK_POSTS.length;
+    item.querySelector('.category-count').textContent = count;
+  });
+}
 
+document.querySelectorAll('.category-item').forEach(item => {
+  item.addEventListener('click', () => {
+    currentCategory = item.dataset.category ?? '';
+    document.querySelectorAll('.category-item').forEach(i => i.classList.remove('active'));
+    item.classList.add('active');
+    renderFeed(document.getElementById('searchInput').value.trim());
+  });
+});
+
+document.querySelectorAll('.sort-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    currentSort = btn.dataset.sort;
+    document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const sortLabel = document.getElementById('feedSortLabel');
+    if (sortLabel) sortLabel.textContent = currentSort === 'newest' ? '최신순' : '오래된순';
+    renderFeed(document.getElementById('searchInput').value.trim());
+  });
+});
+
+// 통합 시 이 함수만 교체 (?search=, ?tag=, ?ordering= 파라미터 대응)
+async function fetchPosts(searchKeyword = '', category = '') {
   return new Promise((resolve) => {
     setTimeout(() => {
-      if (!searchKeyword) return resolve(MOCK_POSTS);
-      const kw = searchKeyword.toLowerCase();
-      const filtered = MOCK_POSTS.filter(p =>
-        p.title.toLowerCase().includes(kw) ||
-        p.tags.some(t => t.toLowerCase().includes(kw))
-      );
+      let filtered = MOCK_POSTS;
+      if (searchKeyword) {
+        const kw = searchKeyword.toLowerCase();
+        filtered = filtered.filter(p =>
+          p.title.toLowerCase().includes(kw) ||
+          p.tags.some(t => t.toLowerCase().includes(kw))
+        );
+      }
+      if (category) filtered = filtered.filter(p => p.tags.includes(category));
       resolve(filtered);
     }, 200);
   });
 }
 
-// 렌더링
 function createPostCard(post) {
   const article = document.createElement('article');
   article.className = 'post-card';
   article.dataset.postId = post.post_id;
 
-  // 태그 HTML (없으면 빈 문자열)
-  const tagsHTML = post.tags.length
-    ? `<div class="post-tags">
-         ${post.tags.map(t => `<span class="tag">#${escapeHTML(t)}</span>`).join('')}
-       </div>`
-    : '';
+  // 이미지 플레이스홀더 + 날짜·작성자 오버레이
+  const thumb = document.createElement('div');
+  thumb.className = 'post-thumb';
+  if (post.thumbnail) {
+    thumb.style.backgroundImage = `url("${post.thumbnail}")`;
+    thumb.style.backgroundSize = 'cover';
+    thumb.style.backgroundPosition = 'center';
+    thumb.style.backgroundRepeat = 'no-repeat';
+  }
 
-  article.innerHTML = `
-    <h2 class="post-title">${escapeHTML(post.title)}</h2>
-    <div class="post-meta">
-      <span class="author">${escapeHTML(post.author_username)}</span>
-      <time datetime="${post.created_at}">${formatDate(post.created_at)}</time>
-    </div>
-    ${tagsHTML}
-  `;
+  const meta = document.createElement('div');
+  meta.className = 'post-card-meta';
+  meta.textContent = `${formatDate(post.created_at)} · ${post.author_username}`;
+  thumb.appendChild(meta);
 
-  // 카드 클릭 → 상세 페이지
+  // 제목 + 태그
+  const body = document.createElement('div');
+  body.className = 'post-body';
+
+  const title = document.createElement('h2');
+  title.className = 'post-title';
+  title.textContent = post.title;
+
+  const tagsDiv = document.createElement('div');
+  tagsDiv.className = 'post-tags';
+  post.tags.forEach(t => {
+    const span = document.createElement('span');
+    span.className = 'tag';
+    span.textContent = `#${t}`;
+    tagsDiv.appendChild(span);
+  });
+
+  body.append(title, tagsDiv);
+  article.append(thumb, body);
+
   article.addEventListener('click', () => {
     location.href = `./pages/detail.html?id=${post.post_id}`;
   });
@@ -47,49 +101,71 @@ function createPostCard(post) {
   return article;
 }
 
+function renderPage() {
+  const listEl = document.getElementById('feedList');
+  const pagePosts = allPosts.slice(currentPage * CARDS_PER_PAGE, (currentPage + 1) * CARDS_PER_PAGE);
+
+  listEl.innerHTML = '';
+  pagePosts.forEach(post => listEl.appendChild(createPostCard(post)));
+
+  const totalEl = document.getElementById('feedTotal');
+  if (totalEl) totalEl.textContent = `총 ${allPosts.length}개`;
+
+  const [prevBtn, nextBtn] = document.querySelectorAll('.feed-nav-btn');
+  if (prevBtn) prevBtn.disabled = currentPage === 0;
+  if (nextBtn) nextBtn.disabled = (currentPage + 1) * CARDS_PER_PAGE >= allPosts.length;
+}
+
 async function renderFeed(keyword = '') {
   const listEl = document.getElementById('feedList');
   listEl.innerHTML = '<p class="loading">불러오는 중...</p>';
 
   try {
-    const posts = await fetchPosts(keyword);
-    listEl.innerHTML = '';
+    const fetched = await fetchPosts(keyword, currentCategory);
+    allPosts = [...fetched].sort((a, b) => {
+      const diff = new Date(b.created_at) - new Date(a.created_at);
+      return currentSort === 'newest' ? diff : -diff;
+    });
+    currentPage = 0;
 
-    if (posts.length === 0) {
+    if (allPosts.length === 0) {
       listEl.innerHTML = '<p class="empty">게시글이 없습니다.</p>';
+      const totalEl = document.getElementById('feedTotal');
+      if (totalEl) totalEl.textContent = '총 0개';
       return;
     }
 
-    posts.forEach(post => {
-      listEl.appendChild(createPostCard(post));
-    });
+    renderPage();
   } catch (err) {
     console.error('[feed] 로드 실패:', err);
     listEl.innerHTML = '<p class="error">불러오기에 실패했습니다.</p>';
   }
 }
 
-//검색
+// 네비게이션 버튼 이벤트
+const [prevBtn, nextBtn] = document.querySelectorAll('.feed-nav-btn');
+if (prevBtn) prevBtn.addEventListener('click', () => {
+  if (currentPage > 0) { currentPage--; renderPage(); }
+});
+if (nextBtn) nextBtn.addEventListener('click', () => {
+  if ((currentPage + 1) * CARDS_PER_PAGE < allPosts.length) { currentPage++; renderPage(); }
+});
+
+// 검색
 let searchTimer;
 document.getElementById('searchInput').addEventListener('input', (e) => {
   clearTimeout(searchTimer);
-  searchTimer = setTimeout(() => {
-    renderFeed(e.target.value.trim());
-  }, 300);
+  searchTimer = setTimeout(() => renderFeed(e.target.value.trim()), 300);
 });
 
 // 헬퍼
-function escapeHTML(str) {
-  const div = document.createElement('div');
-  div.textContent = String(str ?? '');
-  return div.innerHTML;
-}
-
 function formatDate(iso) {
   const d = new Date(iso);
-  return d.toLocaleDateString('ko-KR', {
-    year: 'numeric', month: 'short', day: 'numeric'
-  });
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}.${month}.${day}`;
 }
 
+updateCategoryCounts();
 renderFeed();

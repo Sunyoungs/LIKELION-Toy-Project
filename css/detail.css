@@ -1,0 +1,390 @@
+/* ===== 사이드바 — 상세 페이지 전용 ===== */
+.sidebar-nav {
+  display: none;
+}
+
+.sidebar-search {
+  display: flex;
+  border: 1px solid #ddd;
+  overflow: hidden;
+  margin-bottom: 0;
+  margin-top: 40px;
+}
+.sidebar-search input {
+  flex: 1;
+  padding: 10px 12px;
+  border: none;
+  outline: none;
+  background: white;
+  font-size: 13px;
+}
+.sidebar-search button {
+  width: 40px;
+  height: 40px;
+  background: var(--primary-black);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.sidebar-section {
+  margin-top: 20px;
+}
+.sidebar-section-title {
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+.detail-category-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.detail-category-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.detail-category-list li label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  color: var(--text-muted);
+}
+.detail-category-list input[type="checkbox"] {
+  accent-color: var(--primary-black);
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+.category-toggle-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text-gray);
+  font-family: var(--font-family);
+  padding: 0;
+  flex-shrink: 0;
+}
+
+/* ===== main 레이아웃 — 세로 flex ===== */
+.main {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+.detail-logo {
+  height: 16px;
+  width: auto;
+  align-self: flex-start;
+  flex-shrink: 0;
+  display: block;
+  margin-bottom: 12px;
+}
+
+/* ===== 헤더 nav-bar ===== */
+.feed-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #eee;
+  font-size: 13px;
+  color: var(--text-gray);
+}
+.feed-nav {
+  margin-left: auto;
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.feed-nav-btn {
+  background: none;
+  border: none;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+.feed-nav-btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+/* ===== 2열 본문 ===== */
+.detail-body {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 32px;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+.detail-left {
+  overflow-y: auto;
+  padding-right: 8px;
+}
+.detail-right {
+  overflow-y: auto;
+  border-left: 1px solid #eee;
+  padding-left: 24px;
+}
+
+/* ===== 왼쪽 — 글 내용 ===== */
+.detail-left h2 {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 12px;
+  line-height: 1.4;
+  color: var(--text-main);
+}
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-gray);
+  margin-bottom: 20px;
+}
+.meta-sep {
+  color: #ccc;
+}
+.content {
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+  white-space: pre-line;
+}
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 24px;
+}
+.tag {
+  background: var(--tag-main);
+  border-radius: 12px;
+  padding: 3px 10px;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* ===== 본인 글 액션 (detail-left 하단) ===== */
+#ownerActions {
+  display: flex;
+  gap: 16px;
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid #eee;
+}
+#ownerActions[hidden] {
+  display: none;
+}
+#editBtn,
+#deleteBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: var(--font-family);
+  color: var(--text-gray);
+  padding: 0;
+}
+#deleteBtn {
+  color: var(--text-gray);
+}
+#deleteBtn:hover {
+  color: #cc0000;
+}
+
+/* ===== 오른쪽 — 파일/SNS 패널 ===== */
+.detail-side-panel {
+  width: 100%;
+  padding: 16px;
+  background: var(--primary-gray);
+}
+.side-files {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.clue-image img {
+  width: 100%;
+  height: clamp(210px, 23vw, 330px);
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  display: block;
+}
+.clue-attachment {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 54px;
+  padding: 12px 14px;
+  background: #e5e5e5;
+  border-radius: 4px;
+}
+.clue-attach-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 2.86px;
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  color: var(--primary-black);
+  display: block;
+  flex-shrink: 0;
+}
+
+.clue-attachment-text {
+  min-width: 0;
+  flex: 1;
+}
+.clue-file-name {
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--text-muted);
+  word-break: break-all;
+}
+.clue-download-link {
+  width: 20px;
+  height: 20px;
+  flex: none;
+  order: 2;
+  flex-grow: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+.clue-download-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 2.86px;
+  color: var(--primary-black);
+  display: block;
+}
+.side-divider {
+  margin: 82px 0 24px;
+  border-top: 1px solid #bdbdbd;
+}
+.sns-section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 16px;
+}
+.sns-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-gray);
+  font-size: 14px;
+  text-decoration: none;
+}
+.sns-icon {
+  width: 20px;
+  height: 20px;
+  background: var(--primary-black);
+  border-radius: 3px;
+  display: inline-block;
+  flex-shrink: 0;
+}
+.sns-item:hover {
+  color: var(--text-main);
+}
+
+/* ===== 삭제 모달 ===== */
+#deleteModal {
+  border: none;
+  border-radius: 12px;
+  padding: 24px;
+  width: 360px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+  font-family: var(--font-family);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+}
+#deleteModal::backdrop {
+  background: rgba(0, 0, 0, 0.35);
+}
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.modal-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--text-main);
+}
+.modal-close-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: var(--text-gray);
+  padding: 0;
+  font-family: var(--font-family);
+}
+.modal-post-title {
+  background: var(--primary-gray);
+  border-radius: 4px;
+  padding: 12px 14px;
+  font-size: 14px;
+  margin-bottom: 16px;
+  color: var(--text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.modal-message {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+.modal-cancel-btn {
+  padding: 8px 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: white;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: var(--font-family);
+}
+.modal-confirm-btn {
+  padding: 8px 20px;
+  border: none;
+  border-radius: 4px;
+  background: var(--primary-black);
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: var(--font-family);
+}

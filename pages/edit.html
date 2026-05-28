@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>홈 화면</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/write.css">
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <a href="../index.html"><img src="../images/Logo.svg"></a>
+      <nav class="sidebar-nav">
+        <a href="#" id="edit-upload">수정 완료</a>
+        <a href="#" id="edit-cancel">수정 취소</a>
+      </nav>
+      <div class="sidebar-search">
+        <input type="text" id="searchInput" placeholder="장소 등 떠오르는 키워드 입력하기">
+        <button type="submit"><img src="../images/arrow.svg" style="width: 12px;"></button>
+      </div>
+      <div> <!--정렬 및 카테고리 부분 우선 텍스트만 작성-->
+        <p><strong>카테고리 설정</strong></p>
+        <div class="sidebar-category">
+          <label><input type="checkbox" name="category" value="학창시절"> 학창시절</label>
+          <label><input type="checkbox" name="category" value="대중교통"> 대중교통</label>
+          <label><input type="checkbox" name="category" value="관광명소"> 관광명소</label>
+          <label><input type="checkbox" name="category" value="편의시설"> 편의시설</label>
+        </div>
+      </div> 
+    </aside>
+    <main class="main">
+      <img src="../images/sideLogo-write.svg">
+      <p style="color: var(--text-muted); margin: 20px 0px;">스쳐 지나간 인연을 다시 찾아보세요.</p>
+      <form style="margin-top: 20px">
+        <div class="write-div">
+          <label>제목 <label style="color: #d80000">*</label></label>
+          <input type="text" id="writeTitle" maxlength="30" placeholder="제목 입력하기 (최대 30자)">
+        </div>
+        <div class="write-div">
+          <label>내용 입력 <label style="color: #d80000">*</label></label>
+          <textarea id="writeText" maxlength="1000" placeholder="떠오르는 계절과 특징, 날짜 등을 자유롭게 작성해보세요.&#10;당시의 기억을 자세히 작성할수록 서로를 알아볼 확률이 높아질 거예요. (최대 1,000자)"></textarea>
+        </div>
+        <div class="write-div">
+          <label>SNS 연결</label>
+          <div class="write-sns">
+            <p>■ 인스타그램</p>
+            <input type="text" id="writeSNS_ig" placeholder="URL 첨부하기">
+          </div>
+          <div class="write-sns">
+            <p>■ 기타 SNS</p>
+            <input type="text" id="writeSNS_etc" placeholder="URL 첨부하기">
+          </div>
+        </div>
+      </form>
+    </main>
+  </div>
+  
+  <script src="../js/api.js"></script>
+  <script type="module" src="../js/edit.js"></script>
+</body>
+</html>
