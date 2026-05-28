@@ -12,19 +12,19 @@ if (!postId) {
 
 async function loadData() {
   try {
-    const mockData = await fetchAPI(`/posts/${postId}`); 
-    if (!mockData) {
+    const data = await fetchAPI(`/posts/${postId}`); 
+    if (!data) {
       alert('존재하지 않는 게시글입니다.');
       window.location.href = "../index.html";
       return;
     }
 
-    document.getElementById('writeTitle').value = mockData.title;
-    document.getElementById('writeText').value = mockData.content;
-    if (mockData.sns_link) {
-      document.getElementById('writeSNS_ig').value = mockData.sns_link;
+    document.getElementById('writeTitle').value = data.title;
+    document.getElementById('writeText').value = data.content;
+    if (data.sns_link) {
+      document.getElementById('writeSNS_ig').value = data.sns_link;
     }
-    mockData.tags.forEach(e => {
+    data.tags.forEach(e => {
       const category = document.querySelector(`input[name="category"][value="${e}"]`);
       if (category) category.checked = true;
     });
@@ -57,8 +57,8 @@ document.getElementById('edit-upload').addEventListener('click', async(e) => {
     tags: categoryString
   };
 
-  if (snsIg) requestBody.snsIg = snsIg;
-  if (snsEtc) requestBody.snsEtc = snsEtc;
+  /*if (snsIg) requestBody.snsIg = snsIg;
+  if (snsEtc) requestBody.snsEtc = snsEtc;*/
 
   try {
     await fetchAPI(`/posts/${postId}`, {

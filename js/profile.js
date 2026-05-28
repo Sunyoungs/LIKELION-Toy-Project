@@ -1,6 +1,7 @@
-import { MOCK_POSTS, MOCK_CURRENT_USER } from './mock-data.js';
-
 let currentSort = 'newest';
+let allPosts = [];
+const CARDS_PER_PAGE = 6;
+let currentPage = 0;
 
 document.querySelectorAll('.sort-btn').forEach(btn => {
   btn.addEventListener('click', () => {
@@ -30,7 +31,7 @@ async function fetchProfile() {
   renderSnsLink(snsContainer, MOCK_CURRENT_USER.sns_link);
 
   try {
-    const data = await fetchAPI('/profile/me');
+    const data = await fetchAPI('/users/profile/me');
     if (!data) return;
     if (usernameEl) usernameEl.textContent = data.username;
     renderSnsLink(snsContainer, data.sns_link);
@@ -38,7 +39,6 @@ async function fetchProfile() {
     console.error('프로필 정보 로드 실패:', e);
   }
 }
-fetchProfile();
 
 function createPostCard(post) {
   const article = document.createElement('article');
@@ -93,7 +93,7 @@ function formatDate(iso) {
   return `${year}.${month}.${day}`;
 }
 
-function renderMyPosts() {
+/*function renderMyPosts() {
   const myPosts = MOCK_POSTS.filter(p => p.author_username === MOCK_CURRENT_USER.username);
   const sorted = [...myPosts].sort((a, b) => {
     const diff = new Date(b.created_at) - new Date(a.created_at);
@@ -110,6 +110,54 @@ function renderMyPosts() {
 
   const totalEl = document.querySelector('.feed-total');
   if (totalEl) totalEl.textContent = `총 ${myPosts.length}개`;
-}
+}*/
 
-renderMyPosts();
+function renderPage() {
+  const feedList = document.getElementById('feedList');
+  const sorted = [...allPosts].sort((a, b) => {
+    const diff = new Date(b.created_at) - new Date(a.created_at);
+    return currentSort === 'newest' ? diff : -diff;
+  });
+  const pagePosts = sorted.slice(currentPage * CARDS_PER_PAGE, (currentPage + 1) * CARDS_PER_PAGE);
+ 
+  feedList.innerHTML = '';
+  if (pagePosts.length === 0) {
+    feedList.innerHTML = '<p class="empty">작성한 글이 없습니다.</p>';
+  } else {
+    pagePosts.forEach(post => feedList.appendChild(createPostCard(post)));
+  }
+ 
+  const totalEl = document.querySelector('.feed-total');
+  if (totalEl) totalEl.textContent = `총 ${allPosts.length}개`;
+ 
+  const [prevBtn, nextBtn] = document.querySelectorAll('.feed-nav-btn');
+  if (prevBtn) prevBtn.disabled = currentPage === 0;
+  if (nextBtn) nextBtn.disabled = (currentPage + 1) * CARDS_PER_PAGE >= allPosts.length;
+}
+ 
+async function fetchMyPosts() {
+  const feedList = document.getElementById('feedList');
+  feedList.innerHTML = '<p class="loading">불러오는 중...</p>';
+  try {
+    // [수정] mock 제거 → 실제 API 사용 (명세서 1.7 기준)
+    const data = await fetchAPI('/users/profile/me/posts');
+    allPosts = data || [];
+    currentPage = 0;
+    renderPage();
+  } catch (e) {
+    console.error('내 게시글 로드 실패:', e);
+    feedList.innerHTML = '<p class="error">불러오기에 실패했습니다.</p>';
+  }
+}
+ 
+// 네비게이션 버튼 이벤트
+const [prevBtn, nextBtn] = document.querySelectorAll('.feed-nav-btn');
+if (prevBtn) prevBtn.addEventListener('click', () => {
+  if (currentPage > 0) { currentPage--; renderPage(); }
+});
+if (nextBtn) nextBtn.addEventListener('click', () => {
+  if ((currentPage + 1) * CARDS_PER_PAGE < allPosts.length) { currentPage++; renderPage(); }
+});
+
+fetchProfile();
+fetchMyPosts();

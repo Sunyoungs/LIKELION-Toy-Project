@@ -1,4 +1,4 @@
-const URL = 'https://ieum-backend-api-35900716842.asia-northeast3.run.app/api'
+const BASE_URL = 'https://ieum-backend-api-35900716842.asia-northeast3.run.app/api'
 
 /**
  * @param {string} endpoint // API 엔드포인트 (예: '/auth/login')
@@ -11,10 +11,10 @@ async function fetchAPI(endpoint, option={}) {
   const headers = { 'Content-Type' : 'application/json', ...option.headers };
 
   if (token) { headers['Authorization'] = `Bearer ${token}`; }
-  if (option.body instanceof FormData) { delete headers['Content-Type'] }; // 파일 업로드 시 boundary 자동 계산하도록 Content-Type 삭제
+  if (option.body instanceof FormData) { delete headers['Content-Type']; }; // 파일 업로드 시 boundary 자동 계산하도록 Content-Type 삭제
 
   try {
-    const response = await fetch(`${URL}${endpoint}`, {
+    const response = await fetch(`${BASE_URL}${endpoint}`, {
       ...option, headers,
     });
 
@@ -27,7 +27,9 @@ async function fetchAPI(endpoint, option={}) {
         alert('로그인이 만료되었습니다.\n다시 로그인해주세요.');
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
-        window.location.href = '../pages/login.html';
+        localStorage.removeItem('username');
+        const isPages = location.pathname.includes('/pages/');
+        window.location.href = isPages ? './login.html' : './pages/login.html';
         return;
       }
       throw new Error(data.message || '서버 통신 중 오류가 발생했습니다.');

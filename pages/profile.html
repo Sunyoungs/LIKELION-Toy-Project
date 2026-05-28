@@ -74,7 +74,7 @@
     document.querySelector('.logout-btn').addEventListener('click', async () => {
       const refreshToken = localStorage.getItem('refreshToken');
       try {
-        await fetchAPI('/auth/logout', {
+        await fetchAPI('/users/logout', {
           method: 'POST',
           body: JSON.stringify({ refresh_token: refreshToken })
         });
@@ -89,7 +89,7 @@
     document.querySelector('.withdraw-btn').addEventListener('click', async () => {
       if (!confirm('정말 탈퇴하시겠습니까?\n모든 게시글과 데이터가 삭제됩니다.')) return;
       try {
-        await fetchAPI('/auth/withdraw', { method: 'DELETE' });
+        await fetchAPI('/users/withdraw', { method: 'DELETE' });
         localStorage.clear();
         alert('탈퇴가 완료되었습니다.');
         window.location.href = './login.html';
