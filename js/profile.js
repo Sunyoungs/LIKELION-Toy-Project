@@ -8,7 +8,7 @@ document.querySelectorAll('.sort-btn').forEach(btn => {
     currentSort = btn.dataset.sort;
     document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    renderMyPosts();
+    renderPage();
   });
 });
 
@@ -28,7 +28,6 @@ async function fetchProfile() {
   const snsContainer = document.querySelector('.sns-links');
 
   if (usernameEl) usernameEl.textContent = localStorage.getItem('username') || '';
-  renderSnsLink(snsContainer, MOCK_CURRENT_USER.sns_link);
 
   try {
     const data = await fetchAPI('/users/profile/me');
@@ -58,7 +57,7 @@ function createPostCard(post) {
   meta.className = 'post-card-meta';
 
   const authorName = post.author_username || localStorage.getItem('username') || '';
-  meta.textContent = `${formatDate(post.created_at)} · ${post.author_username}`;
+  meta.textContent = `${formatDate(post.created_at)} · ${authorName}`;
   thumb.appendChild(meta);
 
   const body = document.createElement('div');
@@ -70,7 +69,7 @@ function createPostCard(post) {
 
   const tagsDiv = document.createElement('div');
   tagsDiv.className = 'post-tags';
-  
+
   const tags = post.tags || []; 
   tags.forEach(t => {
     const span = document.createElement('span');
@@ -96,25 +95,6 @@ function formatDate(iso) {
   const day = String(d.getDate()).padStart(2, '0');
   return `${year}.${month}.${day}`;
 }
-
-/*function renderMyPosts() {
-  const myPosts = MOCK_POSTS.filter(p => p.author_username === MOCK_CURRENT_USER.username);
-  const sorted = [...myPosts].sort((a, b) => {
-    const diff = new Date(b.created_at) - new Date(a.created_at);
-    return currentSort === 'newest' ? diff : -diff;
-  });
-  const feedList = document.getElementById('feedList');
-
-  feedList.innerHTML = '';
-  if (sorted.length === 0) {
-    feedList.innerHTML = '<p class="empty">작성한 글이 없습니다.</p>';
-  } else {
-    sorted.forEach(post => feedList.appendChild(createPostCard(post)));
-  }
-
-  const totalEl = document.querySelector('.feed-total');
-  if (totalEl) totalEl.textContent = `총 ${myPosts.length}개`;
-}*/
 
 function renderPage() {
   const feedList = document.getElementById('feedList');
