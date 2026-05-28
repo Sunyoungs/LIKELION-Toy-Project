@@ -9,18 +9,39 @@
   <link rel="stylesheet" href="../css/login.css">
 </head>
 <body>
-  <main class="login-main">
-    <a href="../index.html"><img src="../images/Logo.svg" style="margin-bottom: 30px;"></a>
-    <div class="login-input">
-      <input type="text" class="login-username" placeholder="이름을 입력하세요.">
-      <br>
-      <input type="password" class="login-password" placeholder="비밀번호를 입력하세요.">
-      <br>
-      <button class="login-btn">로그인</button>
-      <br>
-      <a href="./join.html" class="go-join">회원가입하기</a>
+  <div class="side">
+    <p class="side-title">사이를 이음</p>
+    <img src="../images/mainLogo.svg" style="width: 200px; margin: 20px 0px 40px 0px">
+    <div class="side-sub">
+      <p>우리에게 닿지 못한 인연이 여전히 존재합니다.</p>
+      <p>스쳐 지나간 인연을 다시 찾아보세요.</p>
+      <div class="side-var">|</div>
+      <p>시절 인연 아카이브 서비스, 이음.</p>
     </div>
-  </main>
+  </div>
+  <div class="side-main">
+    <main class="login-main">
+      <img src="../images/login.svg" style="margin-bottom: 30px;">
+      <div class="main-username">
+        <label>이름</label>
+        <input type="text" class="login-username" placeholder="이름 입력하기">
+      </div>
+      <div class="main-password">
+        <label>비밀번호</label>
+        <input type="password" class="login-password" placeholder="비밀번호 입력하기">
+      </div>
+      <div class="main-button">
+        <button class="login-btn">로그인</button>
+      </div>
+      <div class="main-or">
+        <span style="margin: 0px 10px">또는</span>
+      </div>
+      <div class="main-footer">
+        <a href="./join.html">회원가입</a>
+      </div>
+    </main>
+  </div>
+
 
   <script src="../js/api.js"></script>
   <script>

@@ -6,29 +6,57 @@
   <title>회원가입</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/join.css">
+  <link rel="stylesheet" href="../css/login.css">
 </head>
 <body>
-  <main class="join-main">
-    <a href="../index.html"><img src="../images/Logo.svg" style="margin-bottom: 30px;"></a>
-    <div class="join-input">
-      <input type="text" class="join-username" placeholder="이름을 입력하세요.">
-      <br>
-      <input type="password" class="join-password" placeholder="비밀번호를 입력하세요.">
-      <br>
-      <button class="join-btn">회원가입</button>
+  <div class="side">
+    <p class="side-title">사이를 이음</p>
+    <img src="../images/mainLogo.svg" style="width: 200px; margin: 20px 0px 40px 0px">
+    <div class="side-sub">
+      <p>우리에게 닿지 못한 인연이 여전히 존재합니다.</p>
+      <p>스쳐 지나간 인연을 다시 찾아보세요.</p>
+      <div class="side-var">|</div>
+      <p>시절 인연 아카이브 서비스, 이음.</p>
     </div>
-    
-  </main>
+  </div>
+  <div class="side-main">
+    <main class="login-main">
+      <img src="../images/join.svg" style="margin-bottom: 30px;">
+      <div class="main-username">
+        <label>이름 <label style="color: #d80000">*</label></label>
+        <input type="text" class="join-username" placeholder="이름 입력하기">
+      </div>
+      <div class="main-row">
+        <div class="main-password">
+          <label>비밀번호 <label style="color: #d80000">*</label></label>
+          <input type="password" class="join-password" placeholder="비밀번호 입력하기">
+        </div>
+        <div class="main-password">
+          <label>비밀번호 확인 <label style="color: #d80000">*</label></label>
+          <input type="password" class="join-password-check" placeholder="비밀번호 입력하기">
+        </div>
+      </div>
+      <div class="main-button">
+        <button class="join-btn">회원가입</button>
+      </div>
+      <div class="main-or">
+        <span style="margin: 0px 10px">또는</span>
+      </div>
+      <div class="main-footer">
+        <a href="./login.html">로그인</a>
+      </div>
+    </main>
+  </div>
 
   <script src="../js/api.js"></script>
   <script>
     document.querySelector('.join-btn').addEventListener('click', async() => {
       const username = document.querySelector('.join-username').value;
       const password = document.querySelector('.join-password').value;
+      const passwordCheck = document.querySelector('.join-password-check').value;
 
-      if(!username || !password) return alert('이름과 비밀번호를 입력해주세요.');
-
+      if(!username || !password || !passwordCheck) return alert('이름과 비밀번호를 입력해주세요.');
+      if(password !== passwordCheck) { return alert('비밀번호가 일치하지 않습니다.'); }
       try {
         const result = await fetchAPI('/users/signup/', {
           method: 'POST',

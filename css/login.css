@@ -1,32 +1,103 @@
 body {
   display: flex;
-  justify-content: center; 
-  align-items: center;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: flex-start;
   height: 100vh;
+  margin: 0px;
+  background-color: var(--primary-bg);
+}
+.side {
+  width: 475px;
   background-color: var(--primary-gray);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-shrink: 0;
+  padding-bottom: 130px;
+}
+.side-title {
+  font-size: 15px;
+  color: var(--text-muted);
+}
+.side-sub {
+  color: var(--text-muted);
+  font-size: 15px;
+  line-height: 1.5;
+}
+.side-var {
+  margin: 20px 0px;
+  color: var(--text-muted);
+}
+.side-main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .login-main {
-  background-color: var(--primary-bg);
-  padding: 50px;
-  border-radius: 15px;
-  text-align: center;
-  width: 400px;
-}
-.login-input input {
   width: 100%;
-  padding: 12px;
+  max-width: 1000px;
+  padding: 40px;
+}
+.main-username, .main-password {
+  margin-bottom: 25px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.main-username > label, .main-password > label {
+  font-size: 15px;
+  color: var(--text-muted);
   margin-bottom: 10px;
 }
-.login-input button {
-  width: 100%;
+.main-username > input, .main-password > input {
   padding: 12px;
-  background: var(--primary-black);
+  background-color: var(--primary-gray);
+  border: none;
+  border-radius: 3px;
+  font-size: 12px;
+  outline: none;
+}
+.main-username > input::placeholder, .main-password > input::placeholder {
+  color: var(--text-gray);
+}
+.main-button {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+.main-button button {
+  padding: 10px 100px;
+  background-color: var(--primary-black);
   color: white;
   border: none;
   border-radius: 3px;
-  cursor: pointer;
-  margin-bottom: 10px;
-}
-.go-join {
   font-size: 13px;
+  cursor: pointer;
+}
+.main-or {
+  display: flex;
+  align-items: center;
+  width: 60%;
+  margin: 60px auto 30px auto;
+  color: var(--text-gray);
+  font-size: 13px;
+}
+.main-or::before, .main-or::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid #000000;
+}
+.main-footer {
+  display: flex;
+  justify-content: center;
+  font-size: 13px;
+  color: var(--text-gray);
+}
+.main-row {
+  display: flex;
+  gap: 15px;
 }
