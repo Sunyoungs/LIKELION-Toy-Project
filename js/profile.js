@@ -56,6 +56,8 @@ function createPostCard(post) {
 
   const meta = document.createElement('div');
   meta.className = 'post-card-meta';
+
+  const authorName = post.author_username || localStorage.getItem('username') || '';
   meta.textContent = `${formatDate(post.created_at)} · ${post.author_username}`;
   thumb.appendChild(meta);
 
@@ -68,7 +70,9 @@ function createPostCard(post) {
 
   const tagsDiv = document.createElement('div');
   tagsDiv.className = 'post-tags';
-  post.tags.forEach(t => {
+  
+  const tags = post.tags || []; 
+  tags.forEach(t => {
     const span = document.createElement('span');
     span.className = 'tag';
     span.textContent = `#${t}`;
