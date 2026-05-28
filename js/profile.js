@@ -1,5 +1,28 @@
 import { MOCK_POSTS, MOCK_CURRENT_USER } from './mock-data.js';
 
+let currentSort = 'newest';
+
+document.querySelectorAll('.sort-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    currentSort = btn.dataset.sort;
+    document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderMyPosts();
+  });
+});
+
+const snsContainer = document.querySelector('.sns-links');
+if (snsContainer && MOCK_CURRENT_USER.sns_links?.length) {
+  MOCK_CURRENT_USER.sns_links.forEach(link => {
+    const a = document.createElement('a');
+    a.href = link;
+    a.textContent = link.replace(/^https?:\/\//, '');
+    a.target = '_blank';
+    a.rel = 'noopener';
+    snsContainer.appendChild(a);
+  });
+}
+
 function createPostCard(post) {
   const article = document.createElement('article');
   article.className = 'post-card';
@@ -7,6 +30,12 @@ function createPostCard(post) {
 
   const thumb = document.createElement('div');
   thumb.className = 'post-thumb';
+  if (post.thumbnail) {
+    thumb.style.backgroundImage = `url("${post.thumbnail}")`;
+    thumb.style.backgroundSize = 'cover';
+    thumb.style.backgroundPosition = 'center';
+    thumb.style.backgroundRepeat = 'no-repeat';
+  }
 
   const meta = document.createElement('div');
   meta.className = 'post-card-meta';
@@ -33,7 +62,7 @@ function createPostCard(post) {
   article.append(thumb, body);
 
   article.addEventListener('click', () => {
-    location.href = `../pages/detail.html?id=${post.post_id}`;
+    location.href = `../pages/detail.html?id=${post.post_id}&from=my`;
   });
 
   return article;
@@ -47,13 +76,17 @@ function formatDate(iso) {
 
 function renderMyPosts() {
   const myPosts = MOCK_POSTS.filter(p => p.author_username === MOCK_CURRENT_USER.username);
+  const sorted = [...myPosts].sort((a, b) => {
+    const diff = new Date(b.created_at) - new Date(a.created_at);
+    return currentSort === 'newest' ? diff : -diff;
+  });
   const feedList = document.getElementById('feedList');
 
   feedList.innerHTML = '';
-  if (myPosts.length === 0) {
+  if (sorted.length === 0) {
     feedList.innerHTML = '<p class="empty">작성한 글이 없습니다.</p>';
   } else {
-    myPosts.forEach(post => feedList.appendChild(createPostCard(post)));
+    sorted.forEach(post => feedList.appendChild(createPostCard(post)));
   }
 
   const totalEl = document.querySelector('.feed-total');

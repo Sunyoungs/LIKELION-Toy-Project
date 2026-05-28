@@ -129,12 +129,10 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-/* 이미지 플레이스홀더 — SVG X 패턴 */
 .post-thumb {
   width: 100%;
   aspect-ratio: 4 / 3;
   background-color: var(--file-main);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Cline x1='0' y1='0' x2='100%25' y2='100%25' stroke='%23c8c8c8' stroke-width='1'/%3E%3Cline x1='100%25' y1='0' x2='0' y2='100%25' stroke='%23c8c8c8' stroke-width='1'/%3E%3Crect x='0' y='0' width='100%25' height='100%25' fill='none' stroke='%23c8c8c8' stroke-width='1'/%3E%3C/svg%3E");
   position: relative;
 }
 

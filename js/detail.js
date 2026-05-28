@@ -1,4 +1,4 @@
-import { MOCK_POST_DETAIL, MOCK_POSTS } from './mock-data.js';
+import { MOCK_POST_DETAIL, MOCK_POSTS, MOCK_CURRENT_USER } from './mock-data.js';
 
 async function fetchPostDetail(postId) {
   return new Promise((resolve, reject) => {
@@ -15,7 +15,9 @@ async function deletePost(postId) {
 }
 
 function renderDetail(post) {
-  document.querySelector('.detail-left').innerHTML = `
+  const left = document.querySelector('.detail-left');
+
+  left.innerHTML = `
     <h2>${escapeHTML(post.title)}</h2>
     <div class="meta">
       <time>${new Date(post.created_at).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' })}</time>
@@ -35,7 +37,7 @@ function renderDetail(post) {
 
 function renderSidePanel(post) {
   const clues = (post.clues || []).map(renderClue).join('');
-  const snsHTML = renderSnsLink(post.sns_link);
+  const snsHTML = renderSnsLinks(post.sns_ig, post.sns_etc);
 
   if (!clues && !snsHTML) return '';
 
@@ -73,11 +75,7 @@ function renderAttachment(clue, fallbackName) {
 
   return `
     <div class="clue-attachment">
-      <span class="clue-attach-icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" focusable="false">
-          <path d="M21.44 11.05 12.25 20.24a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.19 9.19a2 2 0 0 1-2.83-2.83l8.49-8.49" />
-        </svg>
-      </span>
+      <img class="clue-attach-icon" src="../images/file.svg" alt="" aria-hidden="true">
       <div class="clue-attachment-text">
         <p class="clue-file-name">${escapeHTML(fileName)}</p>
       </div>
@@ -87,13 +85,7 @@ function renderAttachment(clue, fallbackName) {
         download="${escapeHTML(fileName)}"
         aria-label="${escapeHTML(fileName)} 다운로드"
       >
-        <span class="clue-download-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" focusable="false">
-            <path d="M12 3v12" />
-            <path d="m7 10 5 5 5-5" />
-            <path d="M5 21h14" />
-          </svg>
-        </span>
+        <img class="clue-download-icon" src="../images/download.svg" alt="다운로드" aria-hidden="true">
       </a>
     </div>
   `;
@@ -109,32 +101,15 @@ function getFileNameFromUrl(fileUrl, fallbackName) {
   }
 }
 
-function renderSnsLink(snsLink) {
-  if (!snsLink) return '';
-
-  const label = getSnsLabel(snsLink);
-
-  return `
-    <div class="sns-section">
-      <a class="sns-item" href="${escapeHTML(snsLink)}" target="_blank" rel="noopener">
-        <span class="sns-icon" aria-hidden="true"></span>
-        ${label}
-      </a>
-    </div>
-  `;
+function renderSnsLinks(snsIg, snsEtc) {
+  const items = [];
+  if (snsIg) items.push(`<a class="sns-item" href="${escapeHTML(snsIg)}" target="_blank" rel="noopener"><span class="sns-icon" aria-hidden="true"></span>인스타그램</a>`);
+  if (snsEtc) items.push(`<a class="sns-item" href="${escapeHTML(snsEtc)}" target="_blank" rel="noopener"><span class="sns-icon" aria-hidden="true"></span>기타 SNS</a>`);
+  if (!items.length) return '';
+  return `<div class="sns-section">${items.join('')}</div>`;
 }
 
-function getSnsLabel(snsLink) {
-  try {
-    const host = new URL(snsLink).hostname.replace(/^www\./, '');
-    return host.includes('instagram.com') ? '인스타그램' : '기타 SNS';
-  } catch {
-    return '기타 SNS';
-  }
-}
-
-function setupOwnerActions(post) {
-  const myUsername = localStorage.getItem('username');
+function setupOwnerActions(post, myUsername) {
   if (post.author_username !== myUsername) return;
 
   document.getElementById('ownerActions').hidden = false;
@@ -144,7 +119,11 @@ function setupOwnerActions(post) {
   });
 
   const modal = document.getElementById('deleteModal');
-  document.getElementById('deleteBtn').addEventListener('click', () => modal.showModal());
+  document.getElementById('deleteBtn').addEventListener('click', () => {
+    document.getElementById('modalPostTitle').textContent = post.title;
+    modal.showModal();
+  });
+  document.getElementById('modalCloseBtn').addEventListener('click', () => modal.close());
   document.getElementById('cancelDeleteBtn').addEventListener('click', () => modal.close());
   document.getElementById('confirmDeleteBtn').addEventListener('click', async () => {
     await deletePost(post.post_id);
@@ -153,28 +132,41 @@ function setupOwnerActions(post) {
 }
 
 (async function init() {
-  const postId = new URLSearchParams(location.search).get('id');
+  const params = new URLSearchParams(location.search);
+  const postId = params.get('id');
+  const from = params.get('from');
 
   // 이전/다음 글 네비게이션
-  const allIds = MOCK_POSTS.map(p => String(p.post_id));
+  const myUsername = MOCK_CURRENT_USER.username;
+  const navUsername = from === 'my' ? MOCK_CURRENT_USER.username : null;
+  const sourcePosts = from === 'my'
+    ? [...MOCK_POSTS]
+        .filter(p => p.author_username === navUsername)
+        .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+    : MOCK_POSTS;
+  const allIds = sourcePosts.map(p => String(p.post_id));
   const currentIdx = allIds.indexOf(String(postId));
   const totalCount = allIds.length;
+
+  const sourceLabel = document.getElementById('sourceLabel');
+  if (sourceLabel && from === 'my') sourceLabel.textContent = '내가 올린 글';
 
   const countEl = document.querySelector('.detail-count');
   if (countEl) countEl.textContent = `총 ${totalCount}개 중 ${currentIdx + 1}개`;
 
+  const fromParam = from ? `&from=${from}` : '';
   const prevBtn = document.getElementById('prevPost');
   const nextBtn = document.getElementById('nextPost');
   if (prevBtn) {
     prevBtn.disabled = currentIdx <= 0;
     prevBtn.addEventListener('click', () => {
-      location.href = `./detail.html?id=${allIds[currentIdx - 1]}`;
+      location.href = `./detail.html?id=${allIds[currentIdx - 1]}${fromParam}`;
     });
   }
   if (nextBtn) {
     nextBtn.disabled = currentIdx >= totalCount - 1;
     nextBtn.addEventListener('click', () => {
-      location.href = `./detail.html?id=${allIds[currentIdx + 1]}`;
+      location.href = `./detail.html?id=${allIds[currentIdx + 1]}${fromParam}`;
     });
   }
 
@@ -186,7 +178,7 @@ function setupOwnerActions(post) {
   try {
     const post = await fetchPostDetail(postId);
     renderDetail(post);
-    setupOwnerActions(post);
+    setupOwnerActions(post, myUsername);
   } catch {
     document.querySelector('.detail-left').innerHTML = '<p>게시글을 찾을 수 없습니다.</p>';
   }
@@ -197,3 +189,14 @@ function escapeHTML(str) {
   div.textContent = String(str ?? '');
   return div.innerHTML;
 }
+
+document.querySelectorAll('.category-toggle-btn').forEach(btn => {
+  const checkbox = btn.closest('li').querySelector('input[type="checkbox"]');
+  checkbox.addEventListener('change', () => {
+    btn.textContent = checkbox.checked ? '취소' : '선택';
+  });
+  btn.addEventListener('click', () => {
+    checkbox.checked = !checkbox.checked;
+    checkbox.dispatchEvent(new Event('change'));
+  });
+});

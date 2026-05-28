@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>마이페이지</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/profile.css">
 </head>
@@ -19,6 +20,13 @@
         <input type="text" id="searchInput" placeholder="장소 등 떠오르는 키워드 입력하기">
         <button type="submit"><img src="../images/arrow.svg" style="width: 12px;"></button>
       </div>
+      <div class="sort-section">
+        <p class="sidebar-section-title">정렬</p>
+        <div class="sort-group">
+          <button class="sort-btn active" data-sort="newest">최신순</button>
+          <button class="sort-btn" data-sort="oldest">오래된순</button>
+        </div>
+      </div>
       <div class="profile-info">
         <p class="profile-info-title">내 정보</p>
         <div class="info-row">
@@ -29,12 +37,16 @@
           <span class="info-label">비밀번호</span>
           <button class="btn-link">변경</button>
         </div>
+        <div class="info-row">
+          <span class="info-label">SNS</span>
+          <div class="info-value sns-links"></div>
+        </div>
         <button class="logout-btn btn-link" style="margin-top: 12px;">로그아웃</button>
         <button class="withdraw-btn">회원탈퇴</button>
       </div>
     </aside>
     <main class="main">
-      <img src="../images/sideLogo.svg">
+      <img src="../images/myLogo.svg">
       <br>
       <div class="feed-header">
         <span>내가 올린 글</span>

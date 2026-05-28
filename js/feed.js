@@ -3,6 +3,16 @@ import { MOCK_POSTS } from './mock-data.js';
 let allPosts = [];
 let currentPage = 0;
 const CARDS_PER_PAGE = 6;
+let currentSort = 'newest';
+
+document.querySelectorAll('.sort-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    currentSort = btn.dataset.sort;
+    document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderFeed(document.getElementById('searchInput').value.trim());
+  });
+});
 
 // 통합 시 이 함수만 교체
 async function fetchPosts(searchKeyword = '') {
@@ -27,6 +37,12 @@ function createPostCard(post) {
   // 이미지 플레이스홀더 + 날짜·작성자 오버레이
   const thumb = document.createElement('div');
   thumb.className = 'post-thumb';
+  if (post.thumbnail) {
+    thumb.style.backgroundImage = `url("${post.thumbnail}")`;
+    thumb.style.backgroundSize = 'cover';
+    thumb.style.backgroundPosition = 'center';
+    thumb.style.backgroundRepeat = 'no-repeat';
+  }
 
   const meta = document.createElement('div');
   meta.className = 'post-card-meta';
@@ -80,7 +96,11 @@ async function renderFeed(keyword = '') {
   listEl.innerHTML = '<p class="loading">불러오는 중...</p>';
 
   try {
-    allPosts = await fetchPosts(keyword);
+    const fetched = await fetchPosts(keyword);
+    allPosts = [...fetched].sort((a, b) => {
+      const diff = new Date(b.created_at) - new Date(a.created_at);
+      return currentSort === 'newest' ? diff : -diff;
+    });
     currentPage = 0;
 
     if (allPosts.length === 0) {

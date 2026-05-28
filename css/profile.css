@@ -103,7 +103,7 @@
 }
 .feed-nav-btn {
   background: none;
-  border: 1px solid #ddd;
+  border: none;
   width: 28px;
   height: 28px;
   cursor: pointer;
@@ -112,11 +112,15 @@
   justify-content: center;
   font-size: 12px;
 }
+.feed-nav-btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
 
-/* ===== 내 글 카드 2열 ===== */
+/* ===== 내 글 카드 3열 ===== */
 #feedList {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 20px;
 }
 
@@ -136,7 +140,6 @@
   width: 100%;
   aspect-ratio: 4 / 3;
   background-color: var(--file-main);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Cline x1='0' y1='0' x2='100%25' y2='100%25' stroke='%23c8c8c8' stroke-width='1'/%3E%3Cline x1='100%25' y1='0' x2='0' y2='100%25' stroke='%23c8c8c8' stroke-width='1'/%3E%3Crect x='0' y='0' width='100%25' height='100%25' fill='none' stroke='%23c8c8c8' stroke-width='1'/%3E%3C/svg%3E");
   position: relative;
 }
 
@@ -173,4 +176,41 @@
   padding: 3px 10px;
   font-size: 11px;
   color: var(--text-muted);
+}
+
+/* ===== 정렬 ===== */
+.sidebar-section-title {
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+.sort-group {
+  display: flex;
+  gap: 16px;
+}
+.sort-btn {
+  background: none;
+  border: none;
+  color: var(--text-gray);
+  cursor: pointer;
+  font-size: 14px;
+  padding: 0;
+  font-family: var(--font-family);
+}
+.sort-btn.active {
+  color: var(--text-main);
+  font-weight: bold;
+}
+
+/* ===== SNS 링크 ===== */
+.sns-links {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.sns-links a {
+  font-size: 13px;
+  color: var(--text-muted);
+  text-decoration: underline;
+  word-break: break-all;
 }
