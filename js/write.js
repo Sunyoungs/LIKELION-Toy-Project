@@ -107,7 +107,7 @@ document.getElementById('write-upload').addEventListener('click', async(e) => {
     });
   }
   try {
-    await fetchAPI('/posts', {
+    await fetchAPI('/posts/', {
       method: 'POST',
       body: formData
     });

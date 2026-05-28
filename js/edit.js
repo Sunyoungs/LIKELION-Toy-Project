@@ -36,7 +36,7 @@ loadData();
 
 document.getElementById('edit-cancel').addEventListener('click', (e) => {
   e.preventDefault();
-  if (confirm('수정을 취소하시겠습니까?\n수정 중인 내용은 저장되지 않습니다.')) { window.location.href = `../pages/detail.html?id=${postId}`; }
+  if (confirm('수정을 취소하시겠습니까?\n수정 중인 내용은 저장되지 않습니다.')) { window.location.href = `./detail.html?id=${postId}`; }
 });
 
 document.getElementById('edit-upload').addEventListener('click', async(e) => {
@@ -66,7 +66,7 @@ document.getElementById('edit-upload').addEventListener('click', async(e) => {
       body: JSON.stringify(requestBody)
     });
     alert('글 수정이 완료되었습니다!');
-    window.location.href = `../pages/detail.html?id=${postId}`;
+    window.location.href = `./detail.html?id=${postId}`;
   } catch (error) {
     alert(error.message);
   }

@@ -35,7 +35,7 @@
           method: 'POST',
           body: JSON.stringify({ username, password })
         });
-        console.log(result);
+        //console.log(result);
 
         localStorage.setItem('accessToken', result.access);
         localStorage.setItem('refreshToken', result.refresh);

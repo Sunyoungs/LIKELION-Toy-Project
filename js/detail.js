@@ -122,8 +122,13 @@ function setupOwnerActions(post, myUsername) {
   document.getElementById('modalCloseBtn').addEventListener('click', () => modal.close());
   document.getElementById('cancelDeleteBtn').addEventListener('click', () => modal.close());
   document.getElementById('confirmDeleteBtn').addEventListener('click', async () => {
-    await deletePost(post.post_id);
-    location.href = '../index.html';
+    try {
+      await deletePost(post.post_id);
+      alert('게시글이 삭제되었습니다.');
+      location.href = '../index.html';
+    } catch (error) {
+      alert('삭제 중 오류가 발생했습니다: ' + error.message);
+    }
   });
 }
 

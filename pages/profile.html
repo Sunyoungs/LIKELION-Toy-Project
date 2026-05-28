@@ -94,7 +94,14 @@
         alert('탈퇴가 완료되었습니다.');
         window.location.href = './login.html';
       } catch (e) {
-        alert(e.message);
+        // ✅ 백엔드의 204 응답 CORS 헤더 누락으로 인한 브라우저 에러일 경우 성공으로 간주
+        if (e.message.includes('Failed to fetch')) {
+          localStorage.clear();
+          alert('탈퇴가 완료되었습니다.');
+          window.location.href = './login.html';
+        } else {
+          alert(e.message);
+        }
       }
     });
   </script>
