@@ -37,8 +37,8 @@
         });
         console.log(result);
 
-        localStorage.setItem('accessToken', result.access_token);
-        localStorage.setItem('refreshToken', result.refresh_token);
+        localStorage.setItem('accessToken', result.access);
+        localStorage.setItem('refreshToken', result.refresh);
         localStorage.setItem('username', username);
         alert('로그인에 성공했습니다!');
         window.location.href = '../index.html';

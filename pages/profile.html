@@ -76,7 +76,7 @@
       try {
         await fetchAPI('/users/logout', {
           method: 'POST',
-          body: JSON.stringify({ refresh_token: refreshToken })
+          body: JSON.stringify({ refresh_token: localStorage.getItem('refreshToken') })
         });
       } catch (e) { /* 토큰 만료 등 에러여도 로컬 정리 진행 */ }
       localStorage.removeItem('accessToken');

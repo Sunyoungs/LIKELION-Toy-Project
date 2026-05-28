@@ -51,7 +51,7 @@ async function fetchPosts(searchKeyword = '', category = '') {
 
   const queryString = params.toString() ? `?${params.toString()}` : '';
 
-  return await fetchAPI(`/posts${queryString}`);
+  return await fetchAPI(`/posts/${queryString}`);
 }
 
 function createPostCard(post) {
