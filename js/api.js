@@ -1,4 +1,4 @@
-const URL = 'http://localhost:8000' // 임시 백엔드 로컬 서버
+const URL = 'https://ieum-backend-api-35900716842.asia-northeast3.run.app/api'
 
 /**
  * @param {string} endpoint // API 엔드포인트 (예: '/auth/login')
@@ -7,13 +7,6 @@ const URL = 'http://localhost:8000' // 임시 백엔드 로컬 서버
  */
 
 async function fetchAPI(endpoint, option={}) {
-  /* 서버 연결 전 임시 로그인 테스트 */
-  if (endpoint === '/auth/login') {
-    return { access_token: "fake_access", refresh_token: "fake_refresh" };
-  }
-  if (endpoint === '/auth/signup') {
-    return { message: "회원가입 완료" };
-  }
   
   const token = localStorage.getItem('accessToken');
   const headers = { 'Content-Type' : 'application/json', ...option.headers };

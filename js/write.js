@@ -90,8 +90,6 @@ document.getElementById('write-upload').addEventListener('click', async(e) => {
   e.preventDefault();
   const title = document.getElementById('writeTitle').value;
   const text = document.getElementById('writeText').value;
-  const snsIg = document.getElementById('writeSNS_ig').value;
-  const snsEtc = document.getElementById('writeSNS_etc').value;
   const category = document.querySelectorAll('input[name="category"]:checked');
 
   if (!title || !text) { return alert('제목과 내용을 모두 작성해주세요.')};
@@ -103,21 +101,16 @@ document.getElementById('write-upload').addEventListener('click', async(e) => {
   formData.append('content', text);
   formData.append('tags', categoryString);
 
-  if (snsIg) formData.append('snsIg', snsIg);
-  if (snsEtc) formData.append('snsEtc', snsEtc);
   if (selectFile.length > 0) {
     selectFile.forEach(nowFile => {
       formData.append('clues', nowFile);
     });
-  } try {
-    console.log('-- 전송될 데이터 확인 --');
-    for (let [key, value] of formData.entries()) { console.log(`${key}: `, value instanceof File ? value.name : value); }
-    /* 백엔드 연결 후 통신하는 코드
-    await fetchAPI('/posts/', {
+  }
+  try {
+    await fetchAPI('/posts', {
       method: 'POST',
       body: formData
     });
-    */
     alert('글 작성이 완료되었습니다!');
     window.location.href = "../index.html";
   } catch (error) {

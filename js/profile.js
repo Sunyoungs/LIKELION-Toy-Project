@@ -11,15 +11,34 @@ document.querySelectorAll('.sort-btn').forEach(btn => {
   });
 });
 
-const snsContainer = document.querySelector('.sns-links');
-if (snsContainer && MOCK_CURRENT_USER.sns_link) {
+function renderSnsLink(container, link) {
+  if (!container || !link) return;
+  container.innerHTML = '';
   const a = document.createElement('a');
-  a.href = MOCK_CURRENT_USER.sns_link;
-  a.textContent = MOCK_CURRENT_USER.sns_link.replace(/^https?:\/\//, '');
+  a.href = link;
+  a.textContent = link.replace(/^https?:\/\//, '');
   a.target = '_blank';
   a.rel = 'noopener';
-  snsContainer.appendChild(a);
+  container.appendChild(a);
 }
+
+async function fetchProfile() {
+  const usernameEl = document.querySelector('.profile-username');
+  const snsContainer = document.querySelector('.sns-links');
+
+  if (usernameEl) usernameEl.textContent = localStorage.getItem('username') || '';
+  renderSnsLink(snsContainer, MOCK_CURRENT_USER.sns_link);
+
+  try {
+    const data = await fetchAPI('/profile/me');
+    if (!data) return;
+    if (usernameEl) usernameEl.textContent = data.username;
+    renderSnsLink(snsContainer, data.sns_link);
+  } catch (e) {
+    console.error('프로필 정보 로드 실패:', e);
+  }
+}
+fetchProfile();
 
 function createPostCard(post) {
   const article = document.createElement('article');

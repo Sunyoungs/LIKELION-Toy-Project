@@ -15,6 +15,7 @@
       <nav class="sidebar-nav">
         <a href="../index.html">메인피드</a>
         <a href="../pages/profile.html">마이페이지</a>
+        <a href="../pages/write.html">작성하기</a>
       </nav>
       <div class="sidebar-search">
         <input type="text" id="searchInput" placeholder="장소 등 떠오르는 키워드 입력하기">
@@ -68,20 +69,34 @@
     if (!token) {
       alert('로그인이 필요한 서비스입니다.\n먼저 로그인을 진행해주세요.');
       window.location.href = './login.html';
-    } else {
-      const profileUsername = localStorage.getItem('username');
-      if (profileUsername) {
-        document.querySelector('.profile-username').textContent = profileUsername;
-      }
-
-      document.querySelector('.logout-btn').addEventListener('click', () => {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-        localStorage.removeItem('username');
-        alert('로그아웃되었습니다.\n로그인 화면으로 이동합니다.');
-        window.location.href = './login.html';
-      });
     }
+
+    document.querySelector('.logout-btn').addEventListener('click', async () => {
+      const refreshToken = localStorage.getItem('refreshToken');
+      try {
+        await fetchAPI('/auth/logout', {
+          method: 'POST',
+          body: JSON.stringify({ refresh_token: refreshToken })
+        });
+      } catch (e) { /* 토큰 만료 등 에러여도 로컬 정리 진행 */ }
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      localStorage.removeItem('username');
+      alert('로그아웃되었습니다.\n로그인 화면으로 이동합니다.');
+      window.location.href = './login.html';
+    });
+
+    document.querySelector('.withdraw-btn').addEventListener('click', async () => {
+      if (!confirm('정말 탈퇴하시겠습니까?\n모든 게시글과 데이터가 삭제됩니다.')) return;
+      try {
+        await fetchAPI('/auth/withdraw', { method: 'DELETE' });
+        localStorage.clear();
+        alert('탈퇴가 완료되었습니다.');
+        window.location.href = './login.html';
+      } catch (e) {
+        alert(e.message);
+      }
+    });
   </script>
 </body>
 </html>
