@@ -1,9 +1,9 @@
 async function fetchPostDetail(postId) {
-  return await fetchAPI(`/posts/${postId}`);
+  return await fetchAPI(`/posts/${postId}/`);
 }
 
 async function deletePost(postId) {
-  await fetchAPI(`/posts/${postId}`, { method: 'DELETE' });
+  await fetchAPI(`/posts/${postId}/`, { method: 'DELETE' });
 }
 
 function renderDetail(post) {
@@ -50,21 +50,13 @@ function renderClue(clue) {
       </div>
     `;
   }
-
-  if (clue.file_type === 'VIDEO') {
-    return renderAttachment(clue, '동영상 파일');
-  }
-
-  if (clue.file_type === 'AUDIO') {
-    return renderAttachment(clue, '녹음 파일');
-  }
-
+  if (clue.file_type === 'VIDEO') return renderAttachment(clue, '동영상 파일');
+  if (clue.file_type === 'AUDIO') return renderAttachment(clue, '녹음 파일');
   return '';
 }
 
 function renderAttachment(clue, fallbackName) {
   const fileName = getFileNameFromUrl(clue.file_url, fallbackName);
-
   return `
     <div class="clue-attachment">
       <img class="clue-attach-icon" src="../images/file.svg" alt="" aria-hidden="true">
@@ -105,15 +97,23 @@ function renderSnsLink(snsLink) {
   `;
 }
 
+function renderCategories(tags) {
+  const PRESET_TAGS = ['학창시절', '대중교통', '관광명소', '편의시설'];
+  const flatTags = (tags || []).flatMap(t => t.split(',').map(s => s.trim())).filter(Boolean);
+  flatTags.forEach(tag => {
+    if (PRESET_TAGS.includes(tag)) {
+      const cb = document.querySelector(`.detail-category-list input[value="${tag}"]`);
+      if (cb) cb.checked = true;
+    }
+  });
+}
+
 function setupOwnerActions(post, myUsername) {
   if (post.author_username !== myUsername) return;
-
   document.getElementById('ownerActions').hidden = false;
-
   document.getElementById('editBtn').addEventListener('click', () => {
     location.href = `./edit.html?id=${post.post_id}`;
   });
-
   const modal = document.getElementById('deleteModal');
   document.getElementById('deleteBtn').addEventListener('click', () => {
     document.getElementById('modalPostTitle').textContent = post.title;
@@ -132,17 +132,65 @@ function setupOwnerActions(post, myUsername) {
   });
 }
 
+// ── 정렬 & 네비게이션 ───────────────────────────────────────
+let currentSort = 'newest';
+let feedContext = null;
+let currentPostId = null;
+
+function getSortedIds() {
+  if (!feedContext) return null;
+  if (!feedContext.timestamps) return [...feedContext.ids];
+  return [...feedContext.ids].sort((a, b) => {
+    const diff = new Date(feedContext.timestamps[b]) - new Date(feedContext.timestamps[a]);
+    return currentSort === 'newest' ? diff : -diff;
+  });
+}
+
+function refreshNav(postIdNum) {
+  const countEl = document.querySelector('.detail-count');
+  const sortedIds = getSortedIds();
+  if (!sortedIds) return;
+
+  const idx = sortedIds.indexOf(postIdNum);
+  if (idx === -1) return;
+
+  const total = sortedIds.length;
+  if (countEl) { countEl.style.display = ''; countEl.textContent = `${idx + 1} / ${total}`; }
+
+  const prevBtn = document.getElementById('prevPost');
+  const nextBtn = document.getElementById('nextPost');
+
+  if (prevBtn) {
+    const newPrev = prevBtn.cloneNode(true);
+    prevBtn.replaceWith(newPrev);
+    newPrev.style.display = '';
+    newPrev.disabled = idx === 0;
+    newPrev.addEventListener('click', () => { location.href = `./detail.html?id=${sortedIds[idx - 1]}`; });
+  }
+  if (nextBtn) {
+    const newNext = nextBtn.cloneNode(true);
+    nextBtn.replaceWith(newNext);
+    newNext.style.display = '';
+    newNext.disabled = idx === total - 1;
+    newNext.addEventListener('click', () => { location.href = `./detail.html?id=${sortedIds[idx + 1]}`; });
+  }
+}
+
+document.querySelectorAll('.sort-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    currentSort = btn.dataset.sort;
+    document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const sortLabel = document.getElementById('detailSortLabel');
+    if (sortLabel) sortLabel.textContent = currentSort === 'newest' ? '최신순' : '오래된순';
+    if (currentPostId !== null) refreshNav(currentPostId);
+  });
+});
+
 (async function init() {
   const params = new URLSearchParams(location.search);
   const postId = params.get('id');
-
-  const countEl = document.querySelector('.detail-count');
-  const prevBtn = document.getElementById('prevPost');
-  const nextBtn = document.getElementById('nextPost');
-  
-  if (countEl) countEl.style.display = 'none';
-  if (prevBtn) prevBtn.style.display = 'none';
-  if (nextBtn) nextBtn.style.display = 'none';
+  currentPostId = parseInt(postId);
 
   if (!postId) {
     document.querySelector('.detail-left').innerHTML = '<p>잘못된 접근입니다.</p>';
@@ -152,9 +200,23 @@ function setupOwnerActions(post, myUsername) {
   const myUsername = localStorage.getItem('username');
 
   try {
-    const post = await fetchPostDetail(postId); // 진짜 API로 데이터 가져오기!
+    const post = await fetchPostDetail(postId);
     renderDetail(post);
+    renderCategories(post.tags);
     setupOwnerActions(post, myUsername);
+
+    feedContext = JSON.parse(sessionStorage.getItem('feedContext') || 'null');
+    if (feedContext) {
+      if (feedContext.sort) {
+        currentSort = feedContext.sort;
+        document.querySelectorAll('.sort-btn').forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.sort === currentSort);
+        });
+        const sortLabel = document.getElementById('detailSortLabel');
+        if (sortLabel) sortLabel.textContent = currentSort === 'newest' ? '최신순' : '오래된순';
+      }
+      refreshNav(currentPostId);
+    }
   } catch (error) {
     document.querySelector('.detail-left').innerHTML = '<p>게시글을 찾을 수 없거나 삭제되었습니다.</p>';
   }
@@ -165,14 +227,3 @@ function escapeHTML(str) {
   div.textContent = String(str ?? '');
   return div.innerHTML;
 }
-
-document.querySelectorAll('.category-toggle-btn').forEach(btn => {
-  const checkbox = btn.closest('li').querySelector('input[type="checkbox"]');
-  checkbox.addEventListener('change', () => {
-    btn.textContent = checkbox.checked ? '취소' : '선택';
-  });
-  btn.addEventListener('click', () => {
-    checkbox.checked = !checkbox.checked;
-    checkbox.dispatchEvent(new Event('change'));
-  });
-});

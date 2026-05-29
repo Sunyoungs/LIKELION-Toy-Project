@@ -64,15 +64,31 @@
   height: 16px;
   cursor: pointer;
 }
-.category-toggle-btn {
+.detail-category-list input[type="checkbox"]:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+/* ===== 정렬 ===== */
+.sort-section {
+  margin-top: 20px;
+}
+.sort-group {
+  display: flex;
+  gap: 16px;
+}
+.sort-btn {
   background: none;
   border: none;
-  cursor: pointer;
-  font-size: 13px;
   color: var(--text-gray);
-  font-family: var(--font-family);
+  cursor: pointer;
+  font-size: 14px;
   padding: 0;
-  flex-shrink: 0;
+  font-family: var(--font-family);
+}
+.sort-btn.active {
+  color: var(--text-main);
+  font-weight: bold;
 }
 
 /* ===== main 레이아웃 — 세로 flex ===== */

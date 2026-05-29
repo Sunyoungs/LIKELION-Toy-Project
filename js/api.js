@@ -1,5 +1,11 @@
 const BASE_URL = 'https://ieum-backend-api-35900716842.asia-northeast3.run.app/api'
 
+// 이전 버그로 잘못 저장된 "undefined"/"null" 토큰 자동 정리
+;['accessToken', 'refreshToken'].forEach(key => {
+  const val = localStorage.getItem(key);
+  if (val === 'undefined' || val === 'null') localStorage.removeItem(key);
+});
+
 /**
  * @param {string} endpoint // API 엔드포인트 (예: '/auth/login')
  * @param {object} option // fetch 옵션 (method, body 등)
@@ -10,7 +16,7 @@ async function fetchAPI(endpoint, option={}) {
   const token = localStorage.getItem('accessToken');
   const headers = { 'Content-Type' : 'application/json', ...option.headers };
 
-  if (token) { headers['Authorization'] = `Bearer ${token}`; }
+  if (token && token !== 'undefined' && token !== 'null') { headers['Authorization'] = `Bearer ${token}`; }
   if (option.body instanceof FormData) { delete headers['Content-Type']; }; // 파일 업로드 시 boundary 자동 계산하도록 Content-Type 삭제
 
   try {

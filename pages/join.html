@@ -36,6 +36,12 @@
           <input type="password" class="join-password-check" placeholder="비밀번호 입력하기">
         </div>
       </div>
+      <div class="main-row">
+        <div class="main-password">
+          <label>SNS 링크 <span style="color:#888; font-size:12px">(선택)</span></label>
+          <input type="text" class="join-sns" placeholder="카카오오픈채팅, 인스타그램 URL 등">
+        </div>
+      </div>
       <div class="main-button">
         <button class="join-btn">회원가입</button>
       </div>
@@ -54,13 +60,16 @@
       const username = document.querySelector('.join-username').value;
       const password = document.querySelector('.join-password').value;
       const passwordCheck = document.querySelector('.join-password-check').value;
+      const sns = document.querySelector('.join-sns').value.trim();
 
       if(!username || !password || !passwordCheck) return alert('이름과 비밀번호를 입력해주세요.');
       if(password !== passwordCheck) { return alert('비밀번호가 일치하지 않습니다.'); }
       try {
+        const body = { username, password };
+        if (sns) body.sns_link = sns;
         const result = await fetchAPI('/users/signup/', {
           method: 'POST',
-          body: JSON.stringify({ username, password })
+          body: JSON.stringify(body)
         });
         
         alert('회원가입이 완료되었습니다.');

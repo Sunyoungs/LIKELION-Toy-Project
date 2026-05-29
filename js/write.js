@@ -4,6 +4,42 @@ if (!token) {
   window.location.href = './login.html';
 }
 
+// ── 자유 태그 ──────────────────────────────────────────────
+let customTags = [];
+
+function renderTagChips() {
+  const container = document.getElementById('tagChips');
+  container.innerHTML = '';
+  customTags.forEach((tag, i) => {
+    const chip = document.createElement('span');
+    chip.className = 'tag-chip';
+    chip.innerHTML = `#${tag} <button type="button" class="chip-remove" data-index="${i}">×</button>`;
+    container.appendChild(chip);
+  });
+  container.querySelectorAll('.chip-remove').forEach(btn => {
+    btn.addEventListener('click', () => {
+      customTags.splice(parseInt(btn.dataset.index), 1);
+      renderTagChips();
+    });
+  });
+}
+
+function addTag() {
+  const input = document.getElementById('tagInput');
+  const val = input.value.trim();
+  if (!val) return;
+  if (customTags.includes(val)) { input.value = ''; return; }
+  customTags.push(val);
+  input.value = '';
+  renderTagChips();
+}
+
+document.getElementById('tagAddBtn').addEventListener('click', addTag);
+document.getElementById('tagInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') { e.preventDefault(); addTag(); }
+});
+
+// ── 파일 첨부 ──────────────────────────────────────────────
 const file = document.getElementById('fileCheck');
 const fileList = document.getElementById('fileList');
 let selectFile = [];
@@ -21,31 +57,27 @@ if (file) {
     const MAX_VIDEO = 50 * 1024 * 1024;
     const MAX_AUDIO = 20 * 1024 * 1024;
 
-    for (let i=0; i<newFile.length; i++) {
+    for (let i = 0; i < newFile.length; i++) {
       const nowFile = newFile[i];
       const typeFile = nowFile.type || '';
       const sizeFile = nowFile.size;
-      const ext = nowFile.name.split('.').pop().toLowerCase(); // 확장자 추출
+      const ext = nowFile.name.split('.').pop().toLowerCase();
 
       if (sizeFile > MAX_VIDEO) {
         alert(`파일(${nowFile.name}) 용량이 너무 큽니다. (최대 50MB)`);
         this.value = '';
         return;
       }
-      // 확장자 및 타입 분류하여 상세 검사
       const isImage = typeFile.startsWith('image/') || ['jpg', 'jpeg', 'png', 'gif'].includes(ext);
       const isVideo = typeFile.startsWith('video/') || ['mp4', 'mov', 'avi', 'mkv'].includes(ext);
       const isAudio = typeFile.startsWith('audio/') || ['mp3', 'wav', 'm4a'].includes(ext);
 
-      if (isImage && sizeFile>MAX_IMAGE) {
+      if (isImage && sizeFile > MAX_IMAGE) {
         return alert(`이미지 파일(${nowFile.name})이(가) 10MB를 초과했습니다.`);
-        this.value = '';
-      } else if (isVideo && sizeFile>MAX_VIDEO) {
+      } else if (isVideo && sizeFile > MAX_VIDEO) {
         return alert(`비디오 파일(${nowFile.name})이(가) 50MB를 초과했습니다.`);
-        this.value = '';
-      } else if (isAudio && sizeFile>MAX_AUDIO) {
+      } else if (isAudio && sizeFile > MAX_AUDIO) {
         return alert(`오디오 파일(${nowFile.name})이(가) 20MB를 초과했습니다.`);
-        this.value = '';
       }
     }
     selectFile = [...selectFile, ...newFile];
@@ -64,57 +96,56 @@ function updateFileUI() {
     return;
   }
   fileList.style.display = 'flex';
-
   selectFile.forEach((e, index) => {
     const fileDiv = document.createElement('div');
-    fileDiv.className = "file-div";
-    fileDiv.innerHTML = `<span style="display: flex; align-items: center; gap: 5px"><img src="../images/file.svg" style="width: 7px">${e.name}</span><button class="delete-button" data-index="${index}">✕</button>`;
+    fileDiv.className = 'file-div';
+    fileDiv.innerHTML = `<span style="display:flex;align-items:center;gap:5px"><img src="../images/file.svg" style="width:7px">${e.name}</span><button class="delete-button" data-index="${index}">✕</button>`;
     fileList.appendChild(fileDiv);
   });
   document.querySelectorAll('.delete-button').forEach(b => {
-    b.addEventListener('click', (e) => {
+    b.addEventListener('click', e => {
       e.preventDefault();
-      const i = parseInt(e.target.dataset.index);
-      selectFile.splice(i, 1);
+      selectFile.splice(parseInt(e.target.dataset.index), 1);
       updateFileUI();
     });
   });
 }
 
-document.getElementById('write-cancel').addEventListener('click', (e) => {
+// ── 취소 ───────────────────────────────────────────────────
+document.getElementById('write-cancel').addEventListener('click', e => {
   e.preventDefault();
-  if (confirm('작성을 취소하시겠습니까?\n작성 중인 내용은 저장되지 않습니다.')) { window.location.href = "../index.html" }
+  if (confirm('작성을 취소하시겠습니까?\n작성 중인 내용은 저장되지 않습니다.')) {
+    window.location.href = '../index.html';
+  }
 });
 
-document.getElementById('write-upload').addEventListener('click', async(e) => {
+// ── 업로드 ─────────────────────────────────────────────────
+document.getElementById('write-upload').addEventListener('click', async e => {
   e.preventDefault();
   const title = document.getElementById('writeTitle').value;
   const text = document.getElementById('writeText').value;
-  const category = document.querySelectorAll('input[name="category"]:checked');
 
-  if (!title || !text) { return alert('제목과 내용을 모두 작성해주세요.')};
-  if (category.length === 0) { return alert('카테고리를 1개 이상 선택해주세요.')};
-  const categoryString = Array.from(category).map(node => node.value).join(', ');
+  if (!title || !text) return alert('제목과 내용을 모두 작성해주세요.');
+
+  const selectedCategories = Array.from(
+    document.querySelectorAll('input[name="category"]:checked')
+  ).map(el => el.value);
+
+  const allTags = [...selectedCategories, ...customTags];
+  if (allTags.length === 0) return alert('카테고리 또는 태그를 1개 이상 선택해주세요.');
 
   const formData = new FormData();
   formData.append('title', title);
   formData.append('content', text);
-  formData.append('tags', categoryString);
+  formData.append('tags', allTags.join(','));
 
-  if (selectFile.length > 0) {
-    selectFile.forEach(nowFile => {
-      formData.append('clues', nowFile);
-    });
-  }
+  selectFile.forEach(nowFile => formData.append('clues', nowFile));
+
   try {
-    await fetchAPI('/posts/', {
-      method: 'POST',
-      body: formData
-    });
-    
+    await fetchAPI('/posts/', { method: 'POST', body: formData });
     alert('글 작성이 완료되었습니다!');
-    window.location.href = "../index.html";
+    window.location.href = '../index.html';
   } catch (error) {
     alert(error.message);
   }
-})
+});

@@ -214,3 +214,54 @@
   text-decoration: underline;
   word-break: break-all;
 }
+
+/* ===== SNS 수정 폼 ===== */
+.sns-edit-form {
+  display: none;
+  margin-top: 8px;
+}
+.sns-edit-form input {
+  width: 100%;
+  padding: 7px 10px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--text-gray);
+  background: white;
+  margin-bottom: 6px;
+  box-sizing: border-box;
+}
+.sns-edit-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.sns-save-btn {
+  padding: 5px 12px;
+  background-color: var(--primary-black);
+  color: white;
+  border: none;
+  border-radius: 3px;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.sns-save-btn:hover {
+  opacity: 0.8;
+}
+
+/* ===== 계정 액션 (로그아웃 + 회원탈퇴) ===== */
+.account-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+.account-actions .logout-btn {
+  color: var(--text-gray);
+  font-size: 13px;
+}
+.account-actions .withdraw-btn {
+  margin-top: 0;
+}

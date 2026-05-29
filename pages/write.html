@@ -19,7 +19,7 @@
         <input type="text" id="searchInput" placeholder="장소 등 떠오르는 키워드 입력하기">
         <button type="submit"><img src="../images/arrow.svg" style="width: 12px;"></button>
       </div>
-      <div> <!--정렬 및 카테고리 부분 우선 텍스트만 작성-->
+      <div> <!--카테고리-->
         <p><strong>카테고리 설정</strong></p>
         <div class="sidebar-category">
           <label><input type="checkbox" name="category" value="학창시절"> 학창시절</label>
@@ -27,7 +27,7 @@
           <label><input type="checkbox" name="category" value="관광명소"> 관광명소</label>
           <label><input type="checkbox" name="category" value="편의시설"> 편의시설</label>
         </div>
-      </div> 
+      </div>
     </aside>
     <main class="main">
       <img src="../images/sideLogo-write.svg">
@@ -51,14 +51,11 @@
           <div id="fileList" style="display: none"></div>
         </div>
         <div class="write-div">
-          <label>SNS 연결</label>
-          <div class="write-sns">
-            <p>■ 인스타그램</p>
-            <input type="text" id="writeSNS_ig" placeholder="URL 첨부하기">
-          </div>
-          <div class="write-sns">
-            <p>■ 기타 SNS</p>
-            <input type="text" id="writeSNS_etc" placeholder="URL 첨부하기">
+          <label>태그</label>
+          <div id="tagChips" class="tag-chips"></div>
+          <div class="tag-input-row">
+            <input type="text" id="tagInput" placeholder="태그 입력하기" maxlength="30">
+            <button type="button" id="tagAddBtn">추가</button>
           </div>
         </div>
       </form>
