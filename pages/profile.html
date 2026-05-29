@@ -37,8 +37,8 @@
         <div class="info-row">
           <span class="info-label">SNS</span>
           <div class="info-value sns-links"></div>
+          <button type="button" class="sns-edit-btn btn-link">수정</button>
         </div>
-        <button type="button" class="sns-edit-btn btn-link">수정</button>
         <div class="sns-edit-form">
           <input type="text" id="snsInput" placeholder="SNS URL 입력">
           <div class="sns-edit-actions">
@@ -53,7 +53,7 @@
       </div>
     </aside>
     <main class="main">
-      <img src="../images/myLogo.svg">
+      <img src="../images/sideLogo-profile.svg">
       <br>
       <div class="feed-header">
         <span>내가 올린 글</span>
@@ -80,7 +80,7 @@
     document.querySelector('.logout-btn').addEventListener('click', async () => {
       const refreshToken = localStorage.getItem('refreshToken');
       try {
-        await fetchAPI('/users/logout', {
+        await fetchAPI('/users/logout/', {
           method: 'POST',
           body: JSON.stringify({ refresh_token: localStorage.getItem('refreshToken') })
         });
@@ -95,7 +95,7 @@
     document.querySelector('.withdraw-btn').addEventListener('click', async () => {
       if (!confirm('정말 탈퇴하시겠습니까?\n모든 게시글과 데이터가 삭제됩니다.')) return;
       try {
-        await fetchAPI('/users/withdraw', { method: 'DELETE' });
+        await fetchAPI('/users/withdraw/', { method: 'DELETE' });
         localStorage.clear();
         alert('탈퇴가 완료되었습니다.');
         window.location.href = './login.html';

@@ -28,7 +28,7 @@ function renderTagChips() {
   customTags.forEach((tag, i) => {
     const chip = document.createElement('span');
     chip.className = 'tag-chip';
-    chip.innerHTML = `#${tag} <button type="button" class="chip-remove" data-index="${i}">×</button>`;
+    chip.innerHTML = `${tag} <button type="button" class="chip-remove" data-index="${i}">×</button>`;
     container.appendChild(chip);
   });
   container.querySelectorAll('.chip-remove').forEach(btn => {
@@ -44,6 +44,11 @@ function addTag() {
   const val = input.value.trim();
   if (!val) return;
   if (customTags.includes(val)) { input.value = ''; return; }
+  if (customTags.length >= 3) {
+    alert('태그는 최대 3개까지 추가할 수 있습니다.');
+    input.value = '';
+    return;
+  }
   customTags.push(val);
   input.value = '';
   renderTagChips();

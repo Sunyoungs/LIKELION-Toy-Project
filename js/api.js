@@ -1,11 +1,5 @@
 const BASE_URL = 'https://ieum-backend-api-35900716842.asia-northeast3.run.app/api'
 
-// 이전 버그로 잘못 저장된 "undefined"/"null" 토큰 자동 정리
-;['accessToken', 'refreshToken'].forEach(key => {
-  const val = localStorage.getItem(key);
-  if (val === 'undefined' || val === 'null') localStorage.removeItem(key);
-});
-
 /**
  * @param {string} endpoint // API 엔드포인트 (예: '/auth/login')
  * @param {object} option // fetch 옵션 (method, body 등)
@@ -16,7 +10,7 @@ async function fetchAPI(endpoint, option={}) {
   const token = localStorage.getItem('accessToken');
   const headers = { 'Content-Type' : 'application/json', ...option.headers };
 
-  if (token && token !== 'undefined' && token !== 'null') { headers['Authorization'] = `Bearer ${token}`; }
+  if (token) { headers['Authorization'] = `Bearer ${token}`; }
   if (option.body instanceof FormData) { delete headers['Content-Type']; }; // 파일 업로드 시 boundary 자동 계산하도록 Content-Type 삭제
 
   try {
@@ -29,6 +23,10 @@ async function fetchAPI(endpoint, option={}) {
     const data = await response.json();
 
     if (!response.ok) {
+      if (endpoint.includes('/users/login')) {
+        throw new Error('이름 또는 비밀번호가 올바르지 않습니다.');
+        
+      }
       if (response.status === 401) {
         alert('로그인이 만료되었습니다.\n다시 로그인해주세요.');
         localStorage.removeItem('accessToken');
@@ -38,7 +36,7 @@ async function fetchAPI(endpoint, option={}) {
         window.location.href = isPages ? './login.html' : './pages/login.html';
         return;
       }
-      throw new Error(data.message || '서버 통신 중 오류가 발생했습니다.');
+      throw new Error(data.message || data.detail || '서버 통신 중 오류가 발생했습니다.');
     }
     return data;
   } catch (error) {

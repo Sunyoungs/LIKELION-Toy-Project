@@ -8,6 +8,7 @@ async function deletePost(postId) {
 
 function renderDetail(post) {
   const left = document.querySelector('.detail-left');
+  const tags = post.tags || [];
 
   left.innerHTML = `
     <h2>${escapeHTML(post.title)}</h2>
@@ -17,9 +18,14 @@ function renderDetail(post) {
       <span>${escapeHTML(post.author_username)}</span>
     </div>
     <p class="content">${escapeHTML(post.content)}</p>
-    <div class="tags">
-      ${post.tags.map(t => `<span class="tag">#${escapeHTML(t)}</span>`).join('')}
-    </div>
+    ${tags.length > 0 ? `
+      <div style="width: fit-content">
+        <div class="side-tags-divider"></div>
+        <div class="tags">
+          ${tags.map(t => `<span class="tag">${escapeHTML(t)}</span>`).join('')}
+        </div>
+      </div>
+    ` : ''}
   `;
 
   document.querySelector('.detail-right').innerHTML = `
@@ -45,7 +51,7 @@ function renderSidePanel(post) {
 function renderClue(clue) {
   if (clue.file_type === 'IMAGE') {
     return `
-      <div class="clue-image">
+      <div class="clue-image" style="cursor: zoom-in" onclick="window.open('${escapeHTML(clue.file_url)}', '_blank')">
         <img src="${escapeHTML(clue.file_url)}" alt="단서 이미지">
       </div>
     `;
@@ -87,11 +93,9 @@ function getFileNameFromUrl(fileUrl, fallbackName) {
 
 function renderSnsLink(snsLink) {
   if (!snsLink) return '';
-  const label = snsLink.includes('instagram.com') ? '인스타그램' : '기타 SNS';
   return `
     <div class="sns-section">
-      <a class="sns-item" href="${escapeHTML(snsLink)}" target="_blank" rel="noopener">
-        <span class="sns-icon" aria-hidden="true"></span>${label}
+      <a class="sns-item" href="${escapeHTML(snsLink)}" target="_blank" rel="noopener">SNS 바로가기 &gt;
       </a>
     </div>
   `;
@@ -155,7 +159,7 @@ function refreshNav(postIdNum) {
   if (idx === -1) return;
 
   const total = sortedIds.length;
-  if (countEl) { countEl.style.display = ''; countEl.textContent = `${idx + 1} / ${total}`; }
+  if (countEl) { countEl.style.display = ''; countEl.textContent = `총 ${total}개 중 ${idx + 1}번째`; }
 
   const prevBtn = document.getElementById('prevPost');
   const nextBtn = document.getElementById('nextPost');
@@ -183,6 +187,10 @@ document.querySelectorAll('.sort-btn').forEach(btn => {
     btn.classList.add('active');
     const sortLabel = document.getElementById('detailSortLabel');
     if (sortLabel) sortLabel.textContent = currentSort === 'newest' ? '최신순' : '오래된순';
+    if (feedContext) {
+      feedContext.sort = currentSort;
+      sessionStorage.setItem('feedContext', JSON.stringify(feedContext));
+    }
     if (currentPostId !== null) refreshNav(currentPostId);
   });
 });

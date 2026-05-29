@@ -15,28 +15,20 @@
         <a href="#" id="write-upload">업로드</a>
         <a href="#" id="write-cancel">작성 취소</a>
       </nav>
-      <div class="sidebar-search">
-        <input type="text" id="searchInput" placeholder="장소 등 떠오르는 키워드 입력하기">
-        <button type="submit"><img src="../images/arrow.svg" style="width: 12px;"></button>
-      </div>
       <div> <!--카테고리-->
-        <p><strong>카테고리 설정</strong></p>
+        <p class="write-category">카테고리 설정</p>
         <ul class="write-category-list">
           <li>
-            <label><input type="radio" name="category" value="학창시절"> 학창시절</label>
-            <span class="cat-select-label">선택</span>
+            <label><input type="radio" name="category" value="학창시절" checked> 학창시절</label>
           </li>
           <li>
             <label><input type="radio" name="category" value="대중교통"> 대중교통</label>
-            <span class="cat-select-label">선택</span>
           </li>
           <li>
             <label><input type="radio" name="category" value="관광명소"> 관광명소</label>
-            <span class="cat-select-label">선택</span>
           </li>
           <li>
             <label><input type="radio" name="category" value="편의시설"> 편의시설</label>
-            <span class="cat-select-label">선택</span>
           </li>
         </ul>
       </div>
@@ -66,7 +58,7 @@
           <label>태그</label>
           <div id="tagChips" class="tag-chips"></div>
           <div class="tag-input-row">
-            <input type="text" id="tagInput" placeholder="태그 입력하기" maxlength="30">
+            <input type="text" id="tagInput" placeholder="태그 입력하기 (최대 3개)" maxlength="30">
             <button type="button" id="tagAddBtn">추가</button>
           </div>
         </div>

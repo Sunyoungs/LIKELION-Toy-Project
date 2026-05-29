@@ -23,13 +23,13 @@ body {
   color: var(--text-muted);
 }
 .side-sub {
-  color: var(--text-muted);
+  color: #262626;
   font-size: 15px;
   line-height: 1.5;
 }
 .side-var {
   margin: 20px 0px;
-  color: var(--text-muted);
+  color: #262626;
 }
 .side-main {
   flex: 1;
@@ -56,7 +56,7 @@ body {
 .main-username > input, .main-password > input {
   padding: 12px;
   background-color: var(--primary-gray);
-  border: none;
+  border: 1px solid var(--border-line);
   border-radius: 3px;
   font-size: 12px;
   outline: none;
@@ -83,19 +83,14 @@ body {
   align-items: center;
   width: 60%;
   margin: 60px auto 30px auto;
-  color: var(--text-gray);
   font-size: 13px;
-}
-.main-or::before, .main-or::after {
-  content: "";
-  flex: 1;
-  border-bottom: 1px solid #000000;
 }
 .main-footer {
   display: flex;
   justify-content: center;
   font-size: 13px;
-  color: var(--text-gray);
+  color: #767676;
+  gap: 20px;
 }
 .main-row {
   display: flex;

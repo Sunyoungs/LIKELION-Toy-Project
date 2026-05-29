@@ -89,7 +89,7 @@ function createPostCard(post) {
   flatTags.filter(t => !PRESET_TAGS.includes(t)).forEach(t => {
     const span = document.createElement('span');
     span.className = 'tag';
-    span.textContent = `#${t}`;
+    span.textContent = `${t}`;
     tagsDiv.appendChild(span);
   });
 

@@ -175,6 +175,9 @@ if (snsEditBtn) {
 if (snsSaveBtn) {
   snsSaveBtn.addEventListener('click', async () => {
     const link = document.getElementById('snsInput').value.trim();
+    if (link && !/^https?:\/\//i.test(link)) {
+      return alert('http:// 또는 https:// 로 시작하는 올바른 URL을 입력해주세요.');
+    }
     try {
       await fetchAPI('/users/profile/me/', {
         method: 'PATCH',

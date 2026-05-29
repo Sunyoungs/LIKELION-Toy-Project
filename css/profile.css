@@ -4,32 +4,6 @@
   font-weight: bold;
 }
 
-.sidebar-search {
-  display: flex;
-  border: 1px solid #ddd;
-  overflow: hidden;
-  margin-bottom: 0;
-}
-.sidebar-search input {
-  flex: 1;
-  padding: 10px 12px;
-  border: none;
-  outline: none;
-  background: white;
-  font-size: 13px;
-}
-.sidebar-search button {
-  width: 40px;
-  height: 40px;
-  background: var(--primary-black);
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
 /* ===== 내 정보 섹션 (사이드바 하단) ===== */
 .profile-info {
   margin-top: auto;
@@ -40,6 +14,7 @@
   font-weight: bold;
   font-size: 14px;
   margin-bottom: 12px;
+  color: var(--text-muted);
 }
 .info-row {
   display: flex;
@@ -51,7 +26,7 @@
 .info-label {
   font-weight: bold;
   min-width: 60px;
-  color: var(--text-main);
+  color: var(--text-muted);
 }
 .info-value {
   color: var(--text-muted);
@@ -63,7 +38,7 @@
   cursor: pointer;
   font-size: 13px;
   text-decoration: underline;
-  padding: 0;
+  margin-left: 5px;
   font-family: var(--font-family);
 }
 .withdraw-btn {
@@ -78,7 +53,7 @@
   display: block;
 }
 .withdraw-btn:hover {
-  color: #cc0000;
+  color: #cc0000 !important;
   text-decoration: underline;
 }
 
@@ -178,30 +153,6 @@
   color: var(--text-muted);
 }
 
-/* ===== 정렬 ===== */
-.sidebar-section-title {
-  font-weight: bold;
-  font-size: 14px;
-  margin-bottom: 8px;
-}
-.sort-group {
-  display: flex;
-  gap: 16px;
-}
-.sort-btn {
-  background: none;
-  border: none;
-  color: var(--text-gray);
-  cursor: pointer;
-  font-size: 14px;
-  padding: 0;
-  font-family: var(--font-family);
-}
-.sort-btn.active {
-  color: var(--text-main);
-  font-weight: bold;
-}
-
 /* ===== SNS 링크 ===== */
 .sns-links {
   display: flex;
@@ -231,6 +182,7 @@
   background: white;
   margin-bottom: 6px;
   box-sizing: border-box;
+  outline: none;
 }
 .sns-edit-actions {
   display: flex;
@@ -264,4 +216,5 @@
 }
 .account-actions .withdraw-btn {
   margin-top: 0;
+  color: var(--text-gray);
 }
