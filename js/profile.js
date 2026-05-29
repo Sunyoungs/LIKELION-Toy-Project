@@ -3,6 +3,7 @@ let allPosts = [];
 const CARDS_PER_PAGE = 6;
 let currentPage = 0;
 let currentSnsLink = '';
+let thumbnailMap = {};
 
 document.querySelectorAll('.sort-btn').forEach(btn => {
   btn.addEventListener('click', () => {
@@ -48,8 +49,9 @@ function createPostCard(post) {
 
   const thumb = document.createElement('div');
   thumb.className = 'post-thumb';
-  if (post.thumbnail_url) {
-    thumb.style.backgroundImage = `url("${post.thumbnail_url}")`;
+  const thumbUrl = post.thumbnail_url || thumbnailMap[post.post_id];
+  if (thumbUrl) {
+    thumb.style.backgroundImage = `url("${thumbUrl}")`;
     thumb.style.backgroundSize = 'cover';
     thumb.style.backgroundPosition = 'center';
     thumb.style.backgroundRepeat = 'no-repeat';
@@ -130,8 +132,13 @@ async function fetchMyPosts() {
   const feedList = document.getElementById('feedList');
   feedList.innerHTML = '<p class="loading">불러오는 중...</p>';
   try {
-    // [수정] mock 제거 → 실제 API 사용 (명세서 1.7 기준)
-    const data = await fetchAPI('/users/profile/me/posts/');
+    const [data, allFeedPosts] = await Promise.all([
+      fetchAPI('/users/profile/me/posts/'),
+      fetchAPI('/posts/')
+    ]);
+    thumbnailMap = Object.fromEntries(
+      (allFeedPosts || []).map(p => [p.post_id, p.thumbnail_url])
+    );
     allPosts = data || [];
     currentPage = 0;
     renderPage();
