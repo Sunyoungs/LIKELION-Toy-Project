@@ -4,6 +4,14 @@ if (!token) {
   window.location.href = './login.html';
 }
 
+// ── 카테고리 선택/취소 레이블 동기화 ─────────────────────────
+document.querySelectorAll('.write-category-list input[type="radio"]').forEach(radio => {
+  radio.addEventListener('change', () => {
+    document.querySelectorAll('.cat-select-label').forEach(s => s.textContent = '선택');
+    if (radio.checked) radio.closest('li').querySelector('.cat-select-label').textContent = '취소';
+  });
+});
+
 // ── 자유 태그 ──────────────────────────────────────────────
 let customTags = [];
 
@@ -99,7 +107,7 @@ function updateFileUI() {
   selectFile.forEach((e, index) => {
     const fileDiv = document.createElement('div');
     fileDiv.className = 'file-div';
-    fileDiv.innerHTML = `<span style="display:flex;align-items:center;gap:5px"><img src="../images/file.svg" style="width:7px">${e.name}</span><button class="delete-button" data-index="${index}">✕</button>`;
+    fileDiv.innerHTML = `<span style="display:flex;align-items:center;gap:8px"><img src="../images/file.svg" style="width:16px;height:16px">${e.name}</span><button class="delete-button" data-index="${index}">✕</button>`;
     fileList.appendChild(fileDiv);
   });
   document.querySelectorAll('.delete-button').forEach(b => {

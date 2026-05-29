@@ -83,9 +83,10 @@ function createPostCard(post) {
   title.textContent = post.title;
 
   const PRESET_TAGS = ['학창시절', '대중교통', '관광명소', '편의시설'];
+  const flatTags = (post.tags || []).flatMap(t => t.split(',').map(s => s.trim())).filter(Boolean);
   const tagsDiv = document.createElement('div');
   tagsDiv.className = 'post-tags';
-  post.tags.filter(t => !PRESET_TAGS.includes(t)).forEach(t => {
+  flatTags.filter(t => !PRESET_TAGS.includes(t)).forEach(t => {
     const span = document.createElement('span');
     span.className = 'tag';
     span.textContent = `#${t}`;
@@ -180,7 +181,10 @@ async function updateCategoryCounts() {
     if (totalEl) totalEl.textContent = posts.length;
     ['학창시절', '대중교통', '관광명소', '편의시설'].forEach(cat => {
       const el = document.querySelector(`.category-item[data-category="${cat}"] .category-count`);
-      if (el) el.textContent = posts.filter(p => p.tags?.includes(cat)).length;
+      if (el) el.textContent = posts.filter(p => {
+        const flat = (p.tags || []).flatMap(t => t.split(',').map(s => s.trim()));
+        return flat.includes(cat);
+      }).length;
     });
   } catch (e) {
     console.error('[feed] 카테고리 카운트 로드 실패:', e);

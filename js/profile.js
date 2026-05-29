@@ -70,9 +70,10 @@ function createPostCard(post) {
   title.textContent = post.title;
 
   const PRESET_TAGS = ['학창시절', '대중교통', '관광명소', '편의시설'];
+  const flatTags = (post.tags || []).flatMap(t => t.split(',').map(s => s.trim())).filter(Boolean);
   const tagsDiv = document.createElement('div');
   tagsDiv.className = 'post-tags';
-  (post.tags || []).filter(t => !PRESET_TAGS.includes(t)).forEach(t => {
+  flatTags.filter(t => !PRESET_TAGS.includes(t)).forEach(t => {
     const span = document.createElement('span');
     span.className = 'tag';
     span.textContent = `#${t}`;

@@ -10,6 +10,14 @@ if (!postId) {
   window.location.href = '../index.html';
 }
 
+// ── 카테고리 선택/취소 레이블 동기화 ─────────────────────────
+document.querySelectorAll('.write-category-list input[type="radio"]').forEach(radio => {
+  radio.addEventListener('change', () => {
+    document.querySelectorAll('.cat-select-label').forEach(s => s.textContent = '선택');
+    if (radio.checked) radio.closest('li').querySelector('.cat-select-label').textContent = '취소';
+  });
+});
+
 // ── 자유 태그 ──────────────────────────────────────────────
 const PRESET_TAGS = ['학창시절', '대중교통', '관광명소', '편의시설'];
 let customTags = [];
@@ -62,11 +70,17 @@ async function loadData() {
     const flatTags = (data.tags || [])
       .flatMap(t => t.split(',').map(s => s.trim()))
       .filter(Boolean);
+    let categorySet = false;
     flatTags.forEach(tag => {
-      if (PRESET_TAGS.includes(tag)) {
-        const checkbox = document.querySelector(`input[name="category"][value="${tag}"]`);
-        if (checkbox) checkbox.checked = true;
-      } else {
+      if (PRESET_TAGS.includes(tag) && !categorySet) {
+        const radio = document.querySelector(`input[name="category"][value="${tag}"]`);
+        if (radio) {
+          radio.checked = true;
+          categorySet = true;
+          const label = radio.closest('li')?.querySelector('.cat-select-label');
+          if (label) label.textContent = '취소';
+        }
+      } else if (!PRESET_TAGS.includes(tag)) {
         customTags.push(tag);
       }
     });
