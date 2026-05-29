@@ -34,10 +34,10 @@
         <button class="login-btn">로그인</button>
       </div>
       <div class="main-or">
-        <span style="margin: 0px 10px">또는</span>
+        <span style="margin: 0px 10px"></span>
       </div>
       <div class="main-footer">
-        <a href="./join.html">회원가입</a>
+        <p>회원이 아니신가요?</p><a href="./join.html">회원가입</a>
       </div>
     </main>
   </div>
@@ -58,8 +58,8 @@
         });
         //console.log(result);
 
-        localStorage.setItem('accessToken', result.access);
-        localStorage.setItem('refreshToken', result.refresh);
+        localStorage.setItem('accessToken', result.access_token ?? result.access);
+        localStorage.setItem('refreshToken', result.refresh_token ?? result.refresh);
         localStorage.setItem('username', username);
         alert('로그인에 성공했습니다!');
         window.location.href = '../index.html';

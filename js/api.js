@@ -23,6 +23,10 @@ async function fetchAPI(endpoint, option={}) {
     const data = await response.json();
 
     if (!response.ok) {
+      if (endpoint.includes('/users/login')) {
+        throw new Error('이름 또는 비밀번호가 올바르지 않습니다.');
+        
+      }
       if (response.status === 401) {
         alert('로그인이 만료되었습니다.\n다시 로그인해주세요.');
         localStorage.removeItem('accessToken');
@@ -32,7 +36,7 @@ async function fetchAPI(endpoint, option={}) {
         window.location.href = isPages ? './login.html' : './pages/login.html';
         return;
       }
-      throw new Error(data.message || '서버 통신 중 오류가 발생했습니다.');
+      throw new Error(data.message || data.detail || '서버 통신 중 오류가 발생했습니다.');
     }
     return data;
   } catch (error) {

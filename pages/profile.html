@@ -35,18 +35,25 @@
           <span class="info-value profile-username"></span>
         </div>
         <div class="info-row">
-          <span class="info-label">비밀번호</span>
-        </div>
-        <div class="info-row">
           <span class="info-label">SNS</span>
           <div class="info-value sns-links"></div>
+          <button type="button" class="sns-edit-btn btn-link">수정</button>
         </div>
-        <button class="logout-btn btn-link" style="margin-top: 12px;">로그아웃</button>
-        <button class="withdraw-btn">회원탈퇴</button>
+        <div class="sns-edit-form">
+          <input type="text" id="snsInput" placeholder="SNS URL 입력">
+          <div class="sns-edit-actions">
+            <button type="button" class="sns-save-btn">저장</button>
+            <button type="button" class="sns-cancel-btn btn-link">취소</button>
+          </div>
+        </div>
+        <div class="account-actions">
+          <button class="logout-btn btn-link">로그아웃</button>
+          <button class="withdraw-btn">회원탈퇴</button>
+        </div>
       </div>
     </aside>
     <main class="main">
-      <img src="../images/myLogo.svg">
+      <img src="../images/sideLogo-profile.svg">
       <br>
       <div class="feed-header">
         <span>내가 올린 글</span>
@@ -73,7 +80,7 @@
     document.querySelector('.logout-btn').addEventListener('click', async () => {
       const refreshToken = localStorage.getItem('refreshToken');
       try {
-        await fetchAPI('/users/logout', {
+        await fetchAPI('/users/logout/', {
           method: 'POST',
           body: JSON.stringify({ refresh_token: localStorage.getItem('refreshToken') })
         });
@@ -88,7 +95,7 @@
     document.querySelector('.withdraw-btn').addEventListener('click', async () => {
       if (!confirm('정말 탈퇴하시겠습니까?\n모든 게시글과 데이터가 삭제됩니다.')) return;
       try {
-        await fetchAPI('/users/withdraw', { method: 'DELETE' });
+        await fetchAPI('/users/withdraw/', { method: 'DELETE' });
         localStorage.clear();
         alert('탈퇴가 완료되었습니다.');
         window.location.href = './login.html';

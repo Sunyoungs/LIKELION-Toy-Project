@@ -62,8 +62,8 @@ function createPostCard(post) {
   // 이미지 플레이스홀더 + 날짜·작성자 오버레이
   const thumb = document.createElement('div');
   thumb.className = 'post-thumb';
-  if (post.thumbnail) {
-    thumb.style.backgroundImage = `url("${post.thumbnail}")`;
+  if (post.thumbnail_url) {
+    thumb.style.backgroundImage = `url("${post.thumbnail_url}")`;
     thumb.style.backgroundSize = 'cover';
     thumb.style.backgroundPosition = 'center';
     thumb.style.backgroundRepeat = 'no-repeat';
@@ -82,12 +82,14 @@ function createPostCard(post) {
   title.className = 'post-title';
   title.textContent = post.title;
 
+  const PRESET_TAGS = ['학창시절', '대중교통', '관광명소', '편의시설'];
+  const flatTags = (post.tags || []).flatMap(t => t.split(',').map(s => s.trim())).filter(Boolean);
   const tagsDiv = document.createElement('div');
   tagsDiv.className = 'post-tags';
-  post.tags.forEach(t => {
+  flatTags.filter(t => !PRESET_TAGS.includes(t)).forEach(t => {
     const span = document.createElement('span');
     span.className = 'tag';
-    span.textContent = `#${t}`;
+    span.textContent = `${t}`;
     tagsDiv.appendChild(span);
   });
 
@@ -95,6 +97,11 @@ function createPostCard(post) {
   article.append(thumb, body);
 
   article.addEventListener('click', () => {
+    sessionStorage.setItem('feedContext', JSON.stringify({
+      ids: allPosts.map(p => p.post_id),
+      timestamps: Object.fromEntries(allPosts.map(p => [p.post_id, p.created_at])),
+      sort: currentSort
+    }));
     location.href = `./pages/detail.html?id=${post.post_id}`;
   });
 
@@ -167,4 +174,22 @@ function formatDate(iso) {
   return `${year}.${month}.${day}`;
 }
 
+async function updateCategoryCounts() {
+  try {
+    const posts = await fetchAPI('/posts/');
+    const totalEl = document.querySelector('.category-item[data-category=""] .category-count');
+    if (totalEl) totalEl.textContent = posts.length;
+    ['학창시절', '대중교통', '관광명소', '편의시설'].forEach(cat => {
+      const el = document.querySelector(`.category-item[data-category="${cat}"] .category-count`);
+      if (el) el.textContent = posts.filter(p => {
+        const flat = (p.tags || []).flatMap(t => t.split(',').map(s => s.trim()));
+        return flat.includes(cat);
+      }).length;
+    });
+  } catch (e) {
+    console.error('[feed] 카테고리 카운트 로드 실패:', e);
+  }
+}
+
 renderFeed();
+updateCategoryCounts();

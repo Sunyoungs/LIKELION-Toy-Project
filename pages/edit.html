@@ -15,19 +15,23 @@
         <a href="#" id="edit-upload">수정 완료</a>
         <a href="#" id="edit-cancel">수정 취소</a>
       </nav>
-      <div class="sidebar-search">
-        <input type="text" id="searchInput" placeholder="장소 등 떠오르는 키워드 입력하기">
-        <button type="submit"><img src="../images/arrow.svg" style="width: 12px;"></button>
+      <div> <!--카테고리-->
+        <p class="write-category">카테고리 설정</p>
+        <ul class="write-category-list">
+          <li>
+            <label><input type="radio" name="category" value="학창시절"> 학창시절</label>
+          </li>
+          <li>
+            <label><input type="radio" name="category" value="대중교통"> 대중교통</label>
+          </li>
+          <li>
+            <label><input type="radio" name="category" value="관광명소"> 관광명소</label>
+          </li>
+          <li>
+            <label><input type="radio" name="category" value="편의시설"> 편의시설</label>
+          </li>
+        </ul>
       </div>
-      <div> <!--정렬 및 카테고리 부분 우선 텍스트만 작성-->
-        <p><strong>카테고리 설정</strong></p>
-        <div class="sidebar-category">
-          <label><input type="checkbox" name="category" value="학창시절"> 학창시절</label>
-          <label><input type="checkbox" name="category" value="대중교통"> 대중교통</label>
-          <label><input type="checkbox" name="category" value="관광명소"> 관광명소</label>
-          <label><input type="checkbox" name="category" value="편의시설"> 편의시설</label>
-        </div>
-      </div> 
     </aside>
     <main class="main">
       <img src="../images/sideLogo-write.svg">
@@ -42,14 +46,11 @@
           <textarea id="writeText" maxlength="1000" placeholder="떠오르는 계절과 특징, 날짜 등을 자유롭게 작성해보세요.&#10;당시의 기억을 자세히 작성할수록 서로를 알아볼 확률이 높아질 거예요. (최대 1,000자)"></textarea>
         </div>
         <div class="write-div">
-          <label>SNS 연결</label>
-          <div class="write-sns">
-            <p>■ 인스타그램</p>
-            <input type="text" id="writeSNS_ig" placeholder="URL 첨부하기">
-          </div>
-          <div class="write-sns">
-            <p>■ 기타 SNS</p>
-            <input type="text" id="writeSNS_etc" placeholder="URL 첨부하기">
+          <label>태그</label>
+          <div id="tagChips" class="tag-chips"></div>
+          <div class="tag-input-row">
+            <input type="text" id="tagInput" placeholder="태그 입력하기 (최대 3개)" maxlength="30">
+            <button type="button" id="tagAddBtn">추가</button>
           </div>
         </div>
       </form>

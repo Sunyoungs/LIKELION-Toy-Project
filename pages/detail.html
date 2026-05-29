@@ -20,24 +20,27 @@
         <input type="text" id="searchInput" placeholder="장소 등 떠오르는 키워드 입력하기">
         <button type="submit"><img src="../images/arrow.svg" style="width: 12px;"></button>
       </div>
+      <div class="sort-section">
+        <p class="sidebar-section-title">정렬</p>
+        <div class="sort-group">
+          <button class="sort-btn active" data-sort="newest">최신순</button>
+          <button class="sort-btn" data-sort="oldest">오래된순</button>
+        </div>
+      </div>
       <div class="sidebar-section">
-        <p class="sidebar-section-title">카테고리 설정</p>
+        <p class="sidebar-section-title">카테고리</p>
         <ul class="detail-category-list">
           <li>
-            <label><input type="checkbox" value="학창시절"> 학창시절</label>
-            <button class="category-toggle-btn" type="button">선택</button>
+            <label><input type="radio" name="category" value="학창시절" disabled> 학창시절</label>
           </li>
           <li>
-            <label><input type="checkbox" value="대중교통"> 대중교통</label>
-            <button class="category-toggle-btn" type="button">선택</button>
+            <label><input type="radio" name="category" value="대중교통" disabled> 대중교통</label>
           </li>
           <li>
-            <label><input type="checkbox" value="관광명소"> 관광명소</label>
-            <button class="category-toggle-btn" type="button">선택</button>
+            <label><input type="radio" name="category" value="관광명소" disabled> 관광명소</label>
           </li>
           <li>
-            <label><input type="checkbox" value="편의시설"> 편의시설</label>
-            <button class="category-toggle-btn" type="button">선택</button>
+            <label><input type="radio" name="category" value="편의시설" disabled> 편의시설</label>
           </li>
         </ul>
       </div>
@@ -51,8 +54,8 @@
 
       <div class="feed-header">
         <span id="sourceLabel">전체보기</span>
-        <span>최신순</span>
-        <span class="detail-count">총 0개 중 0개</span>
+        <span id="detailSortLabel">최신순</span>
+        <span class="detail-count" style="display:none"></span>
         <div class="feed-nav">
           <button class="feed-nav-btn" id="prevPost">&lt;</button>
           <button class="feed-nav-btn" id="nextPost">&gt;</button>
