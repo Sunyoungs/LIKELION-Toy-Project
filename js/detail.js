@@ -132,7 +132,7 @@ function renderSnsLink(snsLink) {
 }
 
 function renderCategories(tags) {
-  const PRESET_TAGS = ['학창시절', '대중교통', '관광명소', '편의시설'];
+  const PRESET_TAGS = ['학창시절', '대학·모임', '동네·일상', '대중교통', '식당', '여행', '직장·아르바이트', '기타'];
   const flatTags = (tags || []).flatMap(t => t.split(',').map(s => s.trim())).filter(Boolean);
   flatTags.forEach(tag => {
     if (PRESET_TAGS.includes(tag)) {

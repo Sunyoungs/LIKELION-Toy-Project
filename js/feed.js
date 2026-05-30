@@ -82,7 +82,7 @@ function createPostCard(post) {
   title.className = 'post-title';
   title.textContent = post.title;
 
-  const PRESET_TAGS = ['학창시절', '대중교통', '관광명소', '편의시설'];
+  const PRESET_TAGS = ['학창시절', '대학·모임', '동네·일상', '대중교통', '식당', '여행', '직장·아르바이트', '기타'];
   const flatTags = (post.tags || []).flatMap(t => t.split(',').map(s => s.trim())).filter(Boolean);
   const tagsDiv = document.createElement('div');
   tagsDiv.className = 'post-tags';
@@ -179,7 +179,7 @@ async function updateCategoryCounts() {
     const posts = await fetchAPI('/posts/');
     const totalEl = document.querySelector('.category-item[data-category=""] .category-count');
     if (totalEl) totalEl.textContent = posts.length;
-    ['학창시절', '대중교통', '관광명소', '편의시설'].forEach(cat => {
+    ['학창시절', '대학·모임', '동네·일상', '대중교통', '식당', '여행', '직장·아르바이트', '기타'].forEach(cat => {
       const el = document.querySelector(`.category-item[data-category="${cat}"] .category-count`);
       if (el) el.textContent = posts.filter(p => {
         const flat = (p.tags || []).flatMap(t => t.split(',').map(s => s.trim()));
