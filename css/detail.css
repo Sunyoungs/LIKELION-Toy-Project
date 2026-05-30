@@ -1,10 +1,5 @@
 .sidebar-section {
-  margin-top: 20px;
-}
-.sidebar-section-title {
-  font-weight: bold;
-  font-size: 14px;
-  margin-bottom: 10px;
+  margin-top: 30px;
 }
 .detail-category-list {
   list-style: none;
@@ -12,6 +7,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  margin-top: 20px;
 }
 .detail-category-list li {
   display: flex;
@@ -44,25 +40,6 @@
 .detail-category-list input[type="radio"]:disabled {
   cursor: default;
   opacity: 0.6;
-}
-
-/* ===== 정렬 ===== */
-.sort-group {
-  display: flex;
-  gap: 16px;
-}
-.sort-btn {
-  background: none;
-  border: none;
-  color: var(--text-gray);
-  cursor: pointer;
-  font-size: 14px;
-  padding: 0;
-  font-family: var(--font-family);
-}
-.sort-btn.active {
-  color: var(--text-muted);
-  font-weight: bold;
 }
 
 /* ===== main 레이아웃 — 세로 flex ===== */
