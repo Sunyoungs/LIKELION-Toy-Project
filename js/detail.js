@@ -63,7 +63,7 @@ function renderClue(clue) {
 
 function renderAttachment(clue, fallbackName) {
   const fileName = getFileNameFromUrl(clue.file_url, fallbackName);
-  const clueId = clue.clue_id || clue.id;
+  const clueId = clue.clue_id;
   const baseUrl = 'https://ieum-backend-api-35900716842.asia-northeast3.run.app/api';
   const downloadUrl = clueId ? `${baseUrl}/posts/clues/${clueId}/download/` : clue.file_url;
   return `
@@ -72,17 +72,44 @@ function renderAttachment(clue, fallbackName) {
       <div class="clue-attachment-text">
         <p class="clue-file-name">${escapeHTML(fileName)}</p>
       </div>
-      <a
+      <button
         class="clue-download-link"
-        href="${escapeHTML(downloadUrl)}"
-        download="${escapeHTML(fileName)}"
+        onclick="downloadFile('${escapeHTML(downloadUrl)}', '${escapeHTML(fileName)}')"
         aria-label="${escapeHTML(fileName)} 다운로드"
+        style="background:none; border:none; cursor:pointer"
       >
         <img class="clue-download-icon" src="../images/download.svg" alt="다운로드" aria-hidden="true">
-      </a>
+      </button>
     </div>
   `;
 }
+
+window.downloadFile = async function(url, fileName) {
+  try {
+    const token = localStorage.getItem('accessToken');
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+
+    if (!response.ok) { throw new Error('다운로드 권한이 없거나 파일을 찾을 수 없습니다.'); }
+    const fileData = await response.blob();
+    const fileDataUrl = window.URL.createObjectURL(fileData);
+    // 가짜 a 태그 생성 및 강제 다운로드 진행
+    const a = document.createElement('a');
+    a.style.display = 'none';
+    a.href = fileDataUrl;
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+    
+    window.URL.revokeObjectURL(fileDataUrl);
+    a.remove();
+  } catch (error) {
+    console.error('다운로드 에러: ', error);
+    alert('파일 다운로드 중 에러가 발생했습니다.');
+  }
+};
 
 function getFileNameFromUrl(fileUrl, fallbackName) {
   try {
