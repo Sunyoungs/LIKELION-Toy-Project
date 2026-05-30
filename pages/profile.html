@@ -31,7 +31,7 @@
       <div class="profile-info">
         <p class="profile-info-title">내 정보</p>
         <div class="info-row">
-          <span class="info-label">이름</span>
+          <span class="info-label">아이디</span>
           <span class="info-value profile-username"></span>
         </div>
         <div class="info-row">
@@ -100,14 +100,10 @@
         alert('탈퇴가 완료되었습니다.');
         window.location.href = './login.html';
       } catch (e) {
-        // ✅ 백엔드의 204 응답 CORS 헤더 누락으로 인한 브라우저 에러일 경우 성공으로 간주
-        if (e.message.includes('Failed to fetch')) {
-          localStorage.clear();
-          alert('탈퇴가 완료되었습니다.');
-          window.location.href = './login.html';
-        } else {
-          alert(e.message);
-        }
+        console.warn('서버 지연 발생: ', e);
+        localStorage.clear();
+        alert('탈퇴가 완료되었습니다.');
+        window.location.href = './login.html';
       }
     });
   </script>

@@ -63,6 +63,9 @@ function renderClue(clue) {
 
 function renderAttachment(clue, fallbackName) {
   const fileName = getFileNameFromUrl(clue.file_url, fallbackName);
+  const clueId = clue.clue_id || clue.id;
+  const baseUrl = 'https://ieum-backend-api-35900716842.asia-northeast3.run.app/api';
+  const downloadUrl = clueId ? `${baseUrl}/posts/clues/${clueId}/download/` : clue.file_url;
   return `
     <div class="clue-attachment">
       <img class="clue-attach-icon" src="../images/file.svg" alt="" aria-hidden="true">
@@ -71,7 +74,7 @@ function renderAttachment(clue, fallbackName) {
       </div>
       <a
         class="clue-download-link"
-        href="${escapeHTML(clue.file_url)}"
+        href="${escapeHTML(downloadUrl)}"
         download="${escapeHTML(fileName)}"
         aria-label="${escapeHTML(fileName)} 다운로드"
       >
