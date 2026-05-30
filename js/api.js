@@ -24,7 +24,7 @@ async function fetchAPI(endpoint, option={}) {
 
     if (!response.ok) {
       if (endpoint.includes('/users/login')) {
-        throw new Error('이름 또는 비밀번호가 올바르지 않습니다.');
+        throw new Error('아이디 또는 비밀번호가 올바르지 않습니다.');
         
       }
       if (response.status === 401) {
